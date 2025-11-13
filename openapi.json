@@ -1,0 +1,563 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/auth/login": {
+      "post": {
+        "description": "Authenticates user by verifying Dynamic.xyz JWT token from Authorization header. Extracts wallet address from verified credentials and returns internal JWT token. Creates a new user if wallet is not registered in the database.",
+        "operationId": "login",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successfully authenticated and token exchanged",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or expired Dynamic JWT token, missing blockchain credentials, or environment mismatch"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Exchange Dynamic.xyz JWT for internal JWT token",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/profile": {
+      "get": {
+        "description": "Retrieve profile information for the authenticated user",
+        "operationId": "getOwnProfile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Profile retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing JWT token"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get current user profile",
+        "tags": [
+          "auth"
+        ]
+      },
+      "patch": {
+        "description": "Update name and/or twitter handle for the authenticated user",
+        "operationId": "updateOwnProfile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing JWT token"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update user profile",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/twitter/connect": {
+      "get": {
+        "description": "Redirects to Twitter OAuth page. Requires JWT token in query parameter (?token=xxx). After successful authorization, Twitter will redirect to the callback URL.",
+        "operationId": "connectTwitter",
+        "parameters": [],
+        "responses": {
+          "302": {
+            "description": "Redirect to Twitter OAuth page"
+          },
+          "401": {
+            "description": "Unauthorized - Missing or invalid JWT token"
+          }
+        },
+        "summary": "Initiate Twitter OAuth flow",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/twitter/callback": {
+      "get": {
+        "description": "Handles the callback from Twitter OAuth. Exchanges authorization code for access token and links Twitter account to the authenticated user.",
+        "operationId": "twitterCallback",
+        "parameters": [],
+        "responses": {
+          "302": {
+            "description": "Redirect to frontend with success or error"
+          }
+        },
+        "summary": "Twitter OAuth callback",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/twitter/disconnect": {
+      "delete": {
+        "description": "Removes Twitter account link from the authenticated user",
+        "operationId": "disconnectTwitter",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Twitter account successfully disconnected",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Missing or invalid JWT token"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Disconnect Twitter account",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/transaction": {
+      "post": {
+        "description": "Process a swap or bridge transaction with the provided parameters",
+        "operationId": "processTransaction",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionPayloadType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction processed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionResponseType"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction data"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "summary": "Process a transaction",
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/api/chat": {
+      "post": {
+        "description": "Process a chat with the provided parameters",
+        "operationId": "processChat",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatPayloadType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chat processed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chat data"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "summary": "Process a chat",
+        "tags": [
+          "Chat"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Agent API",
+    "description": "API for Agent application",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "UserProfileDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "User unique identifier",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "wallet": {
+            "type": "string",
+            "description": "Ethereum wallet address (checksummed)",
+            "example": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+          },
+          "name": {
+            "type": "string",
+            "description": "User display name",
+            "example": "John Doe",
+            "nullable": true
+          },
+          "twitterId": {
+            "type": "string",
+            "description": "Twitter user ID",
+            "example": "12345678",
+            "nullable": true
+          },
+          "twitterUsername": {
+            "type": "string",
+            "description": "Twitter username (handle)",
+            "example": "johndoe",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "wallet",
+          "name",
+          "twitterId",
+          "twitterUsername"
+        ]
+      },
+      "AuthResponseDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "JWT access token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "user": {
+            "description": "User information",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserProfileDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "accessToken",
+          "user"
+        ]
+      },
+      "UpdateProfileDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User display name",
+            "example": "John Doe"
+          }
+        }
+      },
+      "TransactionPayloadType": {
+        "type": "object",
+        "properties": {
+          "actionType": {
+            "type": "string",
+            "enum": [
+              "swap",
+              "bridge"
+            ],
+            "description": "Type of transaction action",
+            "example": "swap"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Amount to swap or bridge",
+            "example": "1000000000000000000"
+          },
+          "fromAsset": {
+            "type": "string",
+            "description": "Source asset symbol or address",
+            "example": "ETH"
+          },
+          "fromChain": {
+            "type": "string",
+            "description": "Source blockchain network",
+            "example": "ethereum"
+          },
+          "toAsset": {
+            "type": "string",
+            "description": "Target asset symbol or address",
+            "example": "USDC"
+          },
+          "toChain": {
+            "type": "string",
+            "description": "Target blockchain network",
+            "example": "polygon"
+          },
+          "eoaAddress": {
+            "type": "string",
+            "description": "EOA (Externally Owned Account) address",
+            "example": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+          },
+          "toAddress": {
+            "type": "string",
+            "description": "Destination address for the transaction",
+            "example": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+          },
+          "slippage": {
+            "type": "string",
+            "description": "Slippage tolerance in percentage",
+            "example": "0.5"
+          }
+        },
+        "required": [
+          "actionType",
+          "amount",
+          "fromAsset",
+          "fromChain",
+          "toAsset",
+          "toChain",
+          "eoaAddress",
+          "toAddress"
+        ]
+      },
+      "TokenType": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Token contract address",
+            "example": "0x0000000000000000000000000000000000000000"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Token amount in smallest unit",
+            "example": "1000000000000000000"
+          },
+          "amountUSD": {
+            "type": "string",
+            "description": "Token amount in USD",
+            "example": "1234.56"
+          },
+          "logo": {
+            "type": "string",
+            "description": "Token logo URI",
+            "example": "https://example.com/token-logo.png"
+          },
+          "decimals": {
+            "type": "number",
+            "description": "Token decimals",
+            "example": 18
+          },
+          "name": {
+            "type": "string",
+            "description": "Token name",
+            "example": "Ethereum"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Token symbol",
+            "example": "ETH"
+          },
+          "chainId": {
+            "type": "number",
+            "description": "Chain ID where token is deployed",
+            "example": 1
+          },
+          "chainName": {
+            "type": "string",
+            "description": "Chain name",
+            "example": "Ethereum"
+          }
+        },
+        "required": [
+          "address",
+          "amount",
+          "decimals",
+          "name",
+          "symbol",
+          "chainId"
+        ]
+      },
+      "TransactionDataType": {
+        "type": "object",
+        "properties": {
+          "approvalAddress": {
+            "type": "string",
+            "description": "Approval address for token spending",
+            "example": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae"
+          },
+          "data": {
+            "type": "object",
+            "description": "Transaction request data"
+          }
+        },
+        "required": [
+          "approvalAddress",
+          "data"
+        ]
+      },
+      "TransactionResponseType": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique transaction ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "fromToken": {
+            "description": "Source token information",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TokenType"
+              }
+            ]
+          },
+          "toToken": {
+            "description": "Destination token information",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TokenType"
+              }
+            ]
+          },
+          "slippage": {
+            "type": "number",
+            "description": "Slippage tolerance",
+            "example": 0.005
+          },
+          "minReceiveAmount": {
+            "type": "string",
+            "description": "Minimum amount to receive",
+            "example": "950000000000000000"
+          },
+          "executionDuration": {
+            "type": "number",
+            "description": "Estimated execution duration in seconds",
+            "example": 30
+          },
+          "transaction": {
+            "description": "Transaction data for execution",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransactionDataType"
+              }
+            ]
+          },
+          "explorer": {
+            "type": "string",
+            "description": "Block explorer URL",
+            "example": "https://etherscan.io"
+          }
+        },
+        "required": [
+          "id",
+          "fromToken",
+          "toToken",
+          "minReceiveAmount",
+          "executionDuration",
+          "transaction",
+          "explorer"
+        ]
+      },
+      "ChatPayloadType": {
+        "type": "object",
+        "properties": {
+          "walletAddress": {
+            "type": "string",
+            "description": "Wallet address",
+            "example": "0x0000000000000000000000000000000000000000"
+          }
+        },
+        "required": [
+          "walletAddress"
+        ]
+      }
+    }
+  }
+}
