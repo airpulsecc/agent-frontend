@@ -1,2 +1,8 @@
 [phases.setup]
 nixpkgsArchive = '3e2cf88148e732abc1d259286123e06a9d8c964a'
+
+[build]
+build_cmd = "pnpm install && pnpm api && pnpm build"
+
+[run]
+run_cmd = "pnpm start"
