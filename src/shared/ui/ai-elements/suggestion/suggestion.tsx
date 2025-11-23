@@ -1,6 +1,6 @@
-import { Link2 } from 'lucide-react'
-import { UnstyledButton } from '../../button'
-import { Text } from '../../text'
+import { Link2 } from "lucide-react";
+import { UnstyledButton } from "../../button/unstyled-button";
+import { Text } from "../../text";
 
 // Могут быть саджесты разных типов:
 // Polymarket
@@ -33,8 +33,8 @@ const Suggestion = () => {
         Swap 0.01 ETH to USDC on Base
       </Text>
     </UnstyledButton>
-  )
-}
+  );
+};
 
 const SuggestionsList = () => {
   return (
@@ -48,7 +48,7 @@ const SuggestionsList = () => {
         <Suggestion />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export { Suggestion, SuggestionsList }
+export { Suggestion, SuggestionsList };
