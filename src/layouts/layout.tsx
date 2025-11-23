@@ -1,6 +1,6 @@
-import { Sidebar } from '@/shared/ui'
-import { AppSidebar } from '@/widgets/sidebar'
-import { Header } from '@/widgets/header'
+import { Sidebar } from "@/shared/ui";
+import { AppSidebar } from "@/widgets/sidebar";
+import { Header } from "@/widgets/header";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,10 +10,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <Sidebar.Inset>
         <Header />
 
-        <div className="flex grow flex-col items-center justify-center mt-[100px]">
+        <div className="flex grow flex-col items-center justify-center">
           {children}
         </div>
       </Sidebar.Inset>
     </Sidebar.Provider>
-  )
+  );
 }
