@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+You are professional React developer with 10+ years experience.
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
@@ -24,15 +26,19 @@ pnpm api        # Regenerate API client from OpenAPI spec
 
 ```typescript
 // CORRECT - Always use this pattern
-const ComponentRoot = (props: ComponentProps) => { /* implementation */ }
-const SubComponent = (props: SubComponentProps) => { /* implementation */ }
+const ComponentRoot = (props: ComponentProps) => {
+  /* implementation */
+};
+const SubComponent = (props: SubComponentProps) => {
+  /* implementation */
+};
 
 const Component = Object.assign(ComponentRoot, {
   SubComponent: SubComponent,
   // ... other subcomponents
-})
+});
 
-export { Component as ComponentName }
+export { Component as ComponentName };
 ```
 
 This pattern is used extensively in: Dialog, DropdownMenu, Sheet, Avatar, Card, Tooltip, Collapsible, Sidebar, and others.
@@ -42,21 +48,23 @@ This pattern is used extensively in: Dialog, DropdownMenu, Sheet, Avatar, Card, 
 - **NEVER use `interface`** - always use `type` for all type definitions
 - Use `as const` with `keyof typeof` for runtime-safe type unions
 - Example:
+
 ```typescript
 // CORRECT
 type ButtonProps = {
-  variant?: 'primary' | 'destructive' | 'outline'
-}
+  variant?: "primary" | "destructive" | "outline";
+};
 
 // WRONG - Never use interface
 interface ButtonProps {
-  variant?: 'primary' | 'destructive' | 'outline'
+  variant?: "primary" | "destructive" | "outline";
 }
 ```
 
 ### 3. Component Structure
 
 All UI components in `src/shared/ui/` follow this structure:
+
 1. Named exports only (no default exports)
 2. CVA for variant management
 3. `cn()` utility for className merging
@@ -64,6 +72,7 @@ All UI components in `src/shared/ui/` follow this structure:
 5. Forwardref when appropriate
 
 Example:
+
 ```typescript
 import { cn } from '@/lib/utils'
 import { cva, type VariantProps } from 'class-variance-authority'

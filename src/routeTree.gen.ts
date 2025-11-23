@@ -10,7 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfileRouteRouteImport } from './routes/profile.route'
-import { Route as ChatRouteRouteImport } from './routes/chat.route'
+import { Route as AnalysisRouteRouteImport } from './routes/analysis.route'
 import { Route as IndexRouteImport } from './routes/index'
 
 const ProfileRouteRoute = ProfileRouteRouteImport.update({
@@ -18,9 +18,9 @@ const ProfileRouteRoute = ProfileRouteRouteImport.update({
   path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ChatRouteRoute = ChatRouteRouteImport.update({
-  id: '/chat',
-  path: '/chat',
+const AnalysisRouteRoute = AnalysisRouteRouteImport.update({
+  id: '/analysis',
+  path: '/analysis',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,31 +31,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/chat': typeof ChatRouteRoute
+  '/analysis': typeof AnalysisRouteRoute
   '/profile': typeof ProfileRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/chat': typeof ChatRouteRoute
+  '/analysis': typeof AnalysisRouteRoute
   '/profile': typeof ProfileRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/chat': typeof ChatRouteRoute
+  '/analysis': typeof AnalysisRouteRoute
   '/profile': typeof ProfileRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat' | '/profile'
+  fullPaths: '/' | '/analysis' | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/profile'
-  id: '__root__' | '/' | '/chat' | '/profile'
+  to: '/' | '/analysis' | '/profile'
+  id: '__root__' | '/' | '/analysis' | '/profile'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ChatRouteRoute: typeof ChatRouteRoute
+  AnalysisRouteRoute: typeof AnalysisRouteRoute
   ProfileRouteRoute: typeof ProfileRouteRoute
 }
 
@@ -68,11 +68,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/chat': {
-      id: '/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof ChatRouteRouteImport
+    '/analysis': {
+      id: '/analysis'
+      path: '/analysis'
+      fullPath: '/analysis'
+      preLoaderRoute: typeof AnalysisRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,7 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ChatRouteRoute: ChatRouteRoute,
+  AnalysisRouteRoute: AnalysisRouteRoute,
   ProfileRouteRoute: ProfileRouteRoute,
 }
 export const routeTree = rootRouteImport

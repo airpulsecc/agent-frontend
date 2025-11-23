@@ -8,8 +8,11 @@ importers:
 
   .:
     dependencies:
+      '@ai-sdk-tools/store':
+        specifier: ^1.2.0
+        version: 1.2.0(@ai-sdk/react@2.0.93(react@19.2.0)(zod@4.1.12))(react@19.2.0)(zod@4.1.12)(zustand@5.0.8(@types/react@19.2.4)(immer@9.0.21)(react@19.2.0)(use-sync-external-store@1.4.0(react@19.2.0)))
       '@ai-sdk/react':
-        specifier: ^2.0.59
+        specifier: ^2.0.93
         version: 2.0.93(react@19.2.0)(zod@4.1.12)
       '@dynamic-labs/ethereum':
         specifier: ^4.40.1
@@ -42,7 +45,7 @@ importers:
         specifier: ^2.1.7
         version: 2.1.8(@types/react-dom@19.2.3(@types/react@19.2.4))(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@radix-ui/react-progress':
-        specifier: ^1.1.7
+        specifier: ^1.1.8
         version: 1.1.8(@types/react-dom@19.2.3(@types/react@19.2.4))(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@radix-ui/react-scroll-area':
         specifier: ^1.2.10
@@ -51,10 +54,10 @@ importers:
         specifier: ^2.2.6
         version: 2.2.6(@types/react-dom@19.2.3(@types/react@19.2.4))(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@radix-ui/react-separator':
-        specifier: ^1.1.7
+        specifier: ^1.1.8
         version: 1.1.8(@types/react-dom@19.2.3(@types/react@19.2.4))(@types/react@19.2.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@radix-ui/react-slot':
-        specifier: ^1.2.3
+        specifier: ^1.2.4
         version: 1.2.4(@types/react@19.2.4)(react@19.2.0)
       '@radix-ui/react-tooltip':
         specifier: ^1.2.8
@@ -78,7 +81,7 @@ importers:
         specifier: ^1.132.50
         version: 1.135.2(@tanstack/react-router@1.135.2(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(@tanstack/router-core@1.135.2)(@types/node@24.10.1)(csstype@3.1.3)(jiti@2.6.1)(lightningcss@1.30.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(solid-js@1.9.10)(tiny-invariant@1.3.3)(tsx@4.20.6)(yaml@2.8.1)
       ai:
-        specifier: ^5.0.59
+        specifier: ^5.0.93
         version: 5.0.93(zod@4.1.12)
       axios:
         specifier: ^1.13.1
@@ -92,6 +95,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.2.0)
@@ -123,7 +129,7 @@ importers:
         specifier: ^15.6.6
         version: 15.6.6(react@19.2.0)
       streamdown:
-        specifier: ^1.3.0
+        specifier: ^1.4.0
         version: 1.4.0(@types/react@19.2.4)(react@19.2.0)
       tailwind-merge:
         specifier: ^3.3.1
@@ -205,6 +211,19 @@ packages:
 
   '@adraffy/ens-normalize@1.11.1':
     resolution: {integrity: sha512-nhCBV3quEgesuf7c7KYfperqSS14T8bYuvJ8PcLJp6znkZpFc0AuW4qBtr8eKVyPPe/8RSr7sglCWPU5eaxwKQ==}
+
+  '@ai-sdk-tools/store@1.2.0':
+    resolution: {integrity: sha512-/R01/2KA3fOyjDGDDaRSgYn6TPsGS1gO7dTYlmdC36QrCTVkN4Aqx4T3PcwUnnp4i4/nhEZb0Ar2/mpYEsQvfw==}
+    peerDependencies:
+      '@ai-sdk/react': '>=2.0.0'
+      react: '>=18.0.0'
+      zustand: '>=5.0.0'
+
+  '@ai-sdk/gateway@2.0.13':
+    resolution: {integrity: sha512-q8M+7+VEKp91I295cjNDgQ4LyGImKj5cDLVARDay7nBTXGjIRZOlthYE7K6Rbz2yHKFyTmKH7MMkYavAM7L/UQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
 
   '@ai-sdk/gateway@2.0.9':
     resolution: {integrity: sha512-E6x4h5CPPPJ0za1r5HsLtHbeI+Tp3H+YFtcH8G3dSSPFE6w+PZINzB4NxLZmg1QqSeA5HTP3ZEzzsohp0o2GEw==}
@@ -2925,6 +2944,10 @@ packages:
     resolution: {integrity: sha512-yNEQvPcVrK9sIe637+I0jD6leluPxzwJKx/Haw6F4H77CdDsszUn5V3o96LPziXkSNE2B83+Z3mjqGKBK/R6Gg==}
     engines: {node: '>= 20'}
 
+  '@vercel/oidc@3.0.5':
+    resolution: {integrity: sha512-fnYhv671l+eTTp48gB4zEsTW/YtRgRPnkI2nT7x6qw5rkI1Lq2hTmQIpHPgyThI0znLK+vX2n9XxKdXZ7BUbbw==}
+    engines: {node: '>= 20'}
+
   '@vitejs/plugin-react@5.1.1':
     resolution: {integrity: sha512-WQfkSw0QbQ5aJ2CHYw23ZGkqnRwqKHD/KYsMeTkZzPT4Jcf0DcBxBtwMJxnu6E7oxw5+JC6ZAiePgh28uJ1HBA==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -3166,6 +3189,12 @@ packages:
 
   ai@5.0.93:
     resolution: {integrity: sha512-9eGcu+1PJgPg4pRNV4L7tLjRR3wdJC9CXQoNMvtqvYNOLZHFCzjHtVIOr2SIkoJJeu2+sOy3hyiSuTmy2MA40g==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  ai@5.0.99:
+    resolution: {integrity: sha512-omnQLLi5yNQWLLJAaQdACsgBSj+c9LTCWwl9z+6albiqlATNF3AGdpr1ZMTJosGkupwswZc6LDIMa3cfHR4x/g==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -7236,6 +7265,23 @@ snapshots:
 
   '@adraffy/ens-normalize@1.11.1': {}
 
+  '@ai-sdk-tools/store@1.2.0(@ai-sdk/react@2.0.93(react@19.2.0)(zod@4.1.12))(react@19.2.0)(zod@4.1.12)(zustand@5.0.8(@types/react@19.2.4)(immer@9.0.21)(react@19.2.0)(use-sync-external-store@1.4.0(react@19.2.0)))':
+    dependencies:
+      '@ai-sdk/react': 2.0.93(react@19.2.0)(zod@4.1.12)
+      '@types/node': 24.10.1
+      ai: 5.0.99(zod@4.1.12)
+      react: 19.2.0
+      zustand: 5.0.8(@types/react@19.2.4)(immer@9.0.21)(react@19.2.0)(use-sync-external-store@1.4.0(react@19.2.0))
+    transitivePeerDependencies:
+      - zod
+
+  '@ai-sdk/gateway@2.0.13(zod@4.1.12)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.0
+      '@ai-sdk/provider-utils': 3.0.17(zod@4.1.12)
+      '@vercel/oidc': 3.0.5
+      zod: 4.1.12
+
   '@ai-sdk/gateway@2.0.9(zod@4.1.12)':
     dependencies:
       '@ai-sdk/provider': 2.0.0
@@ -10439,7 +10485,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.28.4
       '@noble/curves': 1.9.7
-      '@noble/hashes': 1.4.0
+      '@noble/hashes': 1.8.0
       '@solana/buffer-layout': 4.0.1
       '@solana/codecs-numbers': 2.3.0(typescript@5.7.3)
       agentkeepalive: 4.6.0
@@ -11061,7 +11107,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 12.20.55
+      '@types/node': 24.10.1
 
   '@types/d3-array@3.2.2': {}
 
@@ -11248,7 +11294,7 @@ snapshots:
 
   '@types/ws@7.4.7':
     dependencies:
-      '@types/node': 12.20.55
+      '@types/node': 24.10.1
 
   '@types/ws@8.18.1':
     dependencies:
@@ -11257,6 +11303,8 @@ snapshots:
   '@ungap/structured-clone@1.3.0': {}
 
   '@vercel/oidc@3.0.3': {}
+
+  '@vercel/oidc@3.0.5': {}
 
   '@vitejs/plugin-react@5.1.1(vite@7.2.2(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
@@ -12196,6 +12244,14 @@ snapshots:
   ai@5.0.93(zod@4.1.12):
     dependencies:
       '@ai-sdk/gateway': 2.0.9(zod@4.1.12)
+      '@ai-sdk/provider': 2.0.0
+      '@ai-sdk/provider-utils': 3.0.17(zod@4.1.12)
+      '@opentelemetry/api': 1.9.0
+      zod: 4.1.12
+
+  ai@5.0.99(zod@4.1.12):
+    dependencies:
+      '@ai-sdk/gateway': 2.0.13(zod@4.1.12)
       '@ai-sdk/provider': 2.0.0
       '@ai-sdk/provider-utils': 3.0.17(zod@4.1.12)
       '@opentelemetry/api': 1.9.0
@@ -15021,10 +15077,10 @@ snapshots:
   ox@0.6.7(typescript@5.7.3)(zod@4.1.12):
     dependencies:
       '@adraffy/ens-normalize': 1.11.1
-      '@noble/curves': 1.8.1
-      '@noble/hashes': 1.7.1
-      '@scure/bip32': 1.6.2
-      '@scure/bip39': 1.5.4
+      '@noble/curves': 1.9.7
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
       abitype: 1.0.8(typescript@5.7.3)(zod@4.1.12)
       eventemitter3: 5.0.1
     optionalDependencies:
@@ -15050,7 +15106,7 @@ snapshots:
     dependencies:
       '@adraffy/ens-normalize': 1.11.1
       '@noble/ciphers': 1.3.0
-      '@noble/curves': 1.9.2
+      '@noble/curves': 1.9.7
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0

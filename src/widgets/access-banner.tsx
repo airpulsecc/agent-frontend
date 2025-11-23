@@ -1,17 +1,17 @@
-import { AuthDialog } from '../auth/dialog'
-import { Text } from '@/shared/ui'
-import { cn } from '@/lib/utils'
+import { AuthDialog } from "../features/auth/dialog";
+import { Text } from "@/shared/ui";
+import { cn } from "@/lib/utils";
 
 type Props = {
-  className?: string
-}
+  className?: string;
+};
 
 const AccessBanner = ({ className }: Props) => {
   return (
     <div
       className={cn(
-        'border flex justify-between p-3 items-center rounded-md gap-4 max-w-xl w-full',
-        className,
+        "border flex justify-between p-3 items-center rounded-md gap-4 max-w-xl w-full",
+        className
       )}
     >
       <Text variant="xs" color="primary">
@@ -22,7 +22,7 @@ const AccessBanner = ({ className }: Props) => {
         trigger={<AuthDialog.Trigger>Full access</AuthDialog.Trigger>}
       />
     </div>
-  )
-}
+  );
+};
 
-export { AccessBanner }
+export { AccessBanner };

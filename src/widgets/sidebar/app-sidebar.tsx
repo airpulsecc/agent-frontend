@@ -1,26 +1,25 @@
-import { Bot, CircleUser } from 'lucide-react'
-
-import { Sidebar, Text } from '@/shared/ui'
-import { LogoMini } from '@/assets/icons'
-import { Link, useLocation } from '@tanstack/react-router'
+import { Brain, CircleUser } from "lucide-react";
+import { Sidebar, Text } from "@/shared/ui";
+import { LogoMini } from "@/assets/icons";
+import { Link, useLocation } from "@tanstack/react-router";
 
 // Menu items.
 const items = [
   {
-    title: 'Chat',
-    url: '/chat',
-    icon: Bot,
+    title: "Analysis",
+    url: "/analysis",
+    icon: Brain,
   },
   {
-    title: 'Profile',
-    url: '/profile',
+    title: "Profile",
+    url: "/profile",
     icon: CircleUser,
   },
-]
+];
 
 export function AppSidebar() {
-  const location = useLocation()
-  const isActive = (url: string) => location.pathname === url
+  const location = useLocation();
+  const isActive = (url: string) => location.pathname === url;
 
   return (
     <Sidebar variant="floating" collapsible="icon">
@@ -55,5 +54,5 @@ export function AppSidebar() {
         </Sidebar.Group>
       </Sidebar.Content>
     </Sidebar>
-  )
+  );
 }
