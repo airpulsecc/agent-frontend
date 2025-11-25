@@ -1,202 +1,205 @@
-import { Badge, Card, Text, Input, Button } from "@/shared/ui";
-import { Sparkles } from "lucide-react";
+import { Text, Input, Button, Avatar, Card } from "@/shared/ui";
+import { ArrowRight, TrendingUp, Zap, BarChart3 } from "lucide-react";
 import { PolymarketLogo } from "@/assets/icons";
+import { useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useAnalyticsControllerGetRecentAnalyses } from "@/api";
+import { cn } from "@/lib/utils";
 
-// type Star = {
-//   id: number;
-//   x: number;
-//   y: number;
-//   size: number;
-//   duration: number;
-//   delay: number;
-//   isFalling: boolean;
-// };
-
-// function StarryBackground() {
-//   const [stars, setStars] = useState<Star[]>([]);
-
-//   useEffect(() => {
-//     // Generate initial stars
-//     const initialStars: Star[] = Array.from({ length: 100 }, (_, i) => ({
-//       id: i,
-//       x: Math.random() * 100,
-//       y: Math.random() * 100,
-//       size: Math.random() * 3 + 1.5,
-//       duration: Math.random() * 3 + 2,
-//       delay: Math.random() * 10,
-//       isFalling: false,
-//     }));
-//     setStars(initialStars);
-
-//     // Randomly make stars fall
-//     const interval = setInterval(() => {
-//       setStars((prevStars) => {
-//         const starIndex = Math.floor(Math.random() * prevStars.length);
-//         return prevStars.map((star, idx) => {
-//           if (idx === starIndex && !star.isFalling) {
-//             return { ...star, isFalling: true };
-//           }
-//           return star;
-//         });
-//       });
-//     }, 3000); // Every 3 seconds, one star might start falling
-
-//     return () => clearInterval(interval);
-//   }, []);
-
-//   const handleAnimationEnd = (starId: number) => {
-//     setStars((prevStars) =>
-//       prevStars.map((star) =>
-//         star.id === starId
-//           ? {
-//               ...star,
-//               isFalling: false,
-//               y: Math.random() * 100,
-//               x: Math.random() * 100,
-//             }
-//           : star
-//       )
-//     );
-//   };
-
-//   return (
-//     <div
-//       className="fixed inset-0 overflow-hidden pointer-events-none"
-//       style={{ zIndex: 0 }}
-//     >
-//       {stars.map((star) => (
-//         <div
-//           key={star.id}
-//           className="absolute rounded-full"
-//           style={{
-//             left: `${star.x}%`,
-//             top: `${star.y}%`,
-//             width: `${star.size}px`,
-//             height: `${star.size}px`,
-//             backgroundColor: "#ffffff",
-//             opacity: star.isFalling ? 1 : 0.7,
-//             animation: star.isFalling
-//               ? `fall ${star.duration}s linear forwards`
-//               : `twinkle ${star.duration}s ease-in-out ${star.delay}s infinite`,
-//             boxShadow: `0 0 ${star.size * 4}px rgba(255, 255, 255, 0.9), 0 0 ${star.size * 2}px rgba(255, 255, 255, 0.6)`,
-//           }}
-//           onAnimationEnd={() => star.isFalling && handleAnimationEnd(star.id)}
-//         />
-//       ))}
-//       <style>{`
-//         @keyframes twinkle {
-//           0%, 100% { opacity: 0.2; }
-//           50% { opacity: 0.9; }
-//         }
-//         @keyframes fall {
-//           0% {
-//             transform: translateY(0) translateX(0);
-//             opacity: 0.8;
-//           }
-//           100% {
-//             transform: translateY(100vh) translateX(50px);
-//             opacity: 0;
-//           }
-//         }
-//       `}</style>
-//     </div>
-//   );
-// }
-
-function FeatureCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
+function FeaturePill({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <Card className="bg-muted/40 border-border transition-all duration-300 backdrop-blur-sm">
-      <Card.Content className="p-6 flex flex-col items-center text-center space-y-3">
-        <div className="p-3 rounded-full bg-primary/10 border border-primary/20 transition-colors">
-          {icon}
-        </div>
-        <div className="space-y-1">
-          <Text className="font-semibold text-foreground">{title}</Text>
-          <Text className="text-sm text-muted-foreground">{description}</Text>
-        </div>
-      </Card.Content>
-    </Card>
+    <div className="flex items-center gap-2 rounded-full border border-border/50 bg-card/50 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm">
+      {icon}
+      <span>{text}</span>
+    </div>
   );
 }
 
-const Container = () => {
+function RecentAnalysisCard({
+  title,
+  description,
+  image,
+  slug,
+}: {
+  title: string;
+  description?: string;
+  image?: string;
+  slug: string;
+}) {
   return (
-    <>
-      {/* Starry Background */}
-      {/* <StarryBackground /> */}
-      <PolymarketLogo className="w-10 h-10 text-white" />
+    <Link
+      to="/analysis/$id"
+      params={{ id: slug }}
+      className="group flex w-full items-center gap-4 rounded-xl border border-border/50 bg-card/30 p-4 text-left transition-all hover:border-primary/30 hover:bg-card/60"
+    >
+      <Avatar size="md" rounded="lg">
+        <Avatar.Image src={image} rounded="lg" size="md" />
+        <Avatar.Fallback rounded="lg" size="md">
+          {title?.slice(0, 2).toUpperCase()}
+        </Avatar.Fallback>
+      </Avatar>
 
-      <div className="flex flex-col items-center justify-center w-full max-w-4xl px-4 space-y-12 relative z-10">
-        {/* Background Glow Effect */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/20 blur-[100px] rounded-full -z-10 pointer-events-none" />
+      <div className="min-w-0 flex-1 space-y-2">
+        <Text className="truncate" color="main">
+          {title || "Untitled analysis"}
+        </Text>
+        {description && (
+          <Text className="line-clamp-1 text-xs" color="secondary">
+            {description}
+          </Text>
+        )}
+      </div>
 
-        {/* Header Section */}
-        <div className="flex flex-col items-center text-center space-y-6">
-          <Badge
-            variant="secondary"
-            className="px-4 py-1.5 bg-primary/30 text-white border-primary/50 hover:bg-primary/40 transition-colors"
-          >
-            <Sparkles className="w-3 h-3 mr-2" />
-            AI-Powered Market Intelligence
-          </Badge>
+      <ArrowRight className="size-4 text-muted-foreground opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
+    </Link>
+  );
+}
 
-          <div className="space-y-4">
-            <Text
-              as="h1"
-              className="text-5xl md:text-7xl font-bold tracking-tight"
-            >
-              Munar
-            </Text>
-            <Text color="secondary" className="text-lg max-w-2xl mx-auto">
-              Paste any Polymarket event URL to get instant deep analysis,
-              sentiment tracking, and win probability predictions.
-            </Text>
-          </div>
+function extractSlugFromUrl(input: string): string | null {
+  const trimmed = input.trim();
+
+  // Try to parse as URL
+  try {
+    const url = new URL(trimmed);
+    // Check if it's a polymarket URL
+    if (
+      url.hostname === "polymarket.com" ||
+      url.hostname === "www.polymarket.com"
+    ) {
+      // Extract slug from pathname like /event/slug-here
+      const match = url.pathname.match(/^\/event\/([^/?]+)/);
+      if (match) {
+        return match[1];
+      }
+    }
+  } catch {
+    // Not a valid URL, check if it's already a slug
+    // Slug format: lowercase letters, numbers, and hyphens
+    if (/^[a-z0-9-]+$/.test(trimmed)) {
+      return trimmed;
+    }
+  }
+
+  return null;
+}
+
+const Container = () => {
+  const { data: recentAnalyses } = useAnalyticsControllerGetRecentAnalyses({
+    limit: 5,
+  });
+  const [url, setUrl] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleAnalyze = () => {
+    const slug = extractSlugFromUrl(url);
+
+    if (!slug) {
+      setError("Invalid Polymarket URL. Please enter a valid event link.");
+      return;
+    }
+
+    setError(null);
+    navigate({
+      to: "/analysis/$id",
+      params: { id: slug },
+    });
+  };
+
+  return (
+    <div className="relative flex min-h-[80vh] w-full flex-col items-center justify-center px-4">
+      {/* Subtle gradient background */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute left-1/2 top-1/2 size-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[120px]" />
+      </div>
+
+      <div className="relative z-10 flex w-full max-w-2xl flex-col items-center space-y-8">
+        {/* Logo */}
+        <div className="flex items-center gap-3">
+          <PolymarketLogo className="size-10 text-primary" />
         </div>
-
+        {/* Heading */}
+        <div className="space-y-3 text-center">
+          <Text
+            as="h1"
+            className="text-4xl font-bold tracking-tight md:text-5xl"
+          >
+            Munar
+          </Text>
+          <Text color="secondary" className="max-w-md text-base">
+            AI-powered analysis for Polymarket predictions. Paste a link to get
+            started.
+          </Text>
+        </div>
+        {/* Feature pills */}
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <FeaturePill
+            icon={<TrendingUp className="size-3" />}
+            text="Sentiment Analysis"
+          />
+          <FeaturePill
+            icon={<Zap className="size-3" />}
+            text="AI Predictions"
+          />
+          <FeaturePill
+            icon={<BarChart3 className="size-3" />}
+            text="Market Data"
+          />
+        </div>
         {/* Input Section */}
-        <div className="w-full max-w-2xl space-y-4">
-          <div className="relative grid gap-2 w-full">
+        <div className="w-full space-y-2">
+          <div className="relative">
             <Input
-              centred
-              placeholder="Paste a Polymarket event link..."
-              className="h-14 text-base bg-muted/40 border-border focus-visible:ring-primary/30 pl-6 rounded-xl transition-all w-full"
+              placeholder="https://polymarket.com/event/..."
+              className={cn(
+                "h-14 rounded-xl border-border/50 bg-card/50 pr-32 text-base backdrop-blur-sm",
+                "focus-visible:border-primary/50 focus-visible:ring-primary/20",
+                error && "border-destructive focus-visible:border-destructive"
+              )}
+              value={url}
+              onChange={(e) => {
+                setUrl(e.target.value);
+                if (error) setError(null);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleAnalyze();
+                }
+              }}
             />
-            <Button className="bg-primary hover:bg-primary/90 h-14 px-6 rounded-lg transition-all shadow-lg shadow-primary/20">
+            <Button
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg"
+              size="default"
+              onClick={handleAnalyze}
+              disabled={!url.trim()}
+            >
               Analyze
-              <PolymarketLogo className="size-12 -ms-2 -me-2" />
+              <ArrowRight className="size-4" />
             </Button>
           </div>
+          {error && <Text className="text-sm text-destructive">{error}</Text>}
         </div>
-
-        {/* Feature Cards */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full pt-8">
-          <FeatureCard
-            icon={<TrendingUp className="w-5 h-5 text-primary" />}
-            title="Sentiment Analysis"
-            description="Real-time social tracking"
-          />
-          <FeatureCard
-            icon={<Sparkles className="w-5 h-5 text-primary" />}
-            title="Win Probability"
-            description="AI-calculated odds"
-          />
-          <FeatureCard
-            icon={<Eye className="w-5 h-5 text-primary" />}
-            title="Whale Watching"
-            description="Smart money movements"
-          />
-        </div> */}
+        {/* Recent Analyses */}
+        {recentAnalyses && recentAnalyses.length > 0 && (
+          <div className="w-full space-y-3">
+            <Text className="text-sm text-muted-foreground">
+              Recent analyses
+            </Text>
+            <div className="space-y-2">
+              {recentAnalyses.slice(0, 3).map((analysis) => (
+                <RecentAnalysisCard
+                  key={analysis.slug}
+                  title={analysis.title}
+                  description={analysis.description}
+                  image={analysis.image}
+                  slug={analysis.slug}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

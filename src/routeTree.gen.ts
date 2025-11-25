@@ -9,18 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AnalysisRouteImport } from './routes/analysis'
 import { Route as ProfileRouteRouteImport } from './routes/profile.route'
-import { Route as AnalysisRouteRouteImport } from './routes/analysis.route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnalysisIdRouteRouteImport } from './routes/analysis.$id.route'
 
+const AnalysisRoute = AnalysisRouteImport.update({
+  id: '/analysis',
+  path: '/analysis',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRouteRoute = ProfileRouteRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnalysisRouteRoute = AnalysisRouteRouteImport.update({
-  id: '/analysis',
-  path: '/analysis',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -28,51 +29,59 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnalysisIdRouteRoute = AnalysisIdRouteRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AnalysisRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/analysis': typeof AnalysisRouteRoute
   '/profile': typeof ProfileRouteRoute
+  '/analysis': typeof AnalysisRouteWithChildren
+  '/analysis/$id': typeof AnalysisIdRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/analysis': typeof AnalysisRouteRoute
   '/profile': typeof ProfileRouteRoute
+  '/analysis': typeof AnalysisRouteWithChildren
+  '/analysis/$id': typeof AnalysisIdRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/analysis': typeof AnalysisRouteRoute
   '/profile': typeof ProfileRouteRoute
+  '/analysis': typeof AnalysisRouteWithChildren
+  '/analysis/$id': typeof AnalysisIdRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analysis' | '/profile'
+  fullPaths: '/' | '/profile' | '/analysis' | '/analysis/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analysis' | '/profile'
-  id: '__root__' | '/' | '/analysis' | '/profile'
+  to: '/' | '/profile' | '/analysis' | '/analysis/$id'
+  id: '__root__' | '/' | '/profile' | '/analysis' | '/analysis/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AnalysisRouteRoute: typeof AnalysisRouteRoute
   ProfileRouteRoute: typeof ProfileRouteRoute
+  AnalysisRoute: typeof AnalysisRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/analysis': {
+      id: '/analysis'
+      path: '/analysis'
+      fullPath: '/analysis'
+      preLoaderRoute: typeof AnalysisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/analysis': {
-      id: '/analysis'
-      path: '/analysis'
-      fullPath: '/analysis'
-      preLoaderRoute: typeof AnalysisRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -82,13 +91,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/analysis/$id': {
+      id: '/analysis/$id'
+      path: '/$id'
+      fullPath: '/analysis/$id'
+      preLoaderRoute: typeof AnalysisIdRouteRouteImport
+      parentRoute: typeof AnalysisRoute
+    }
   }
 }
 
+interface AnalysisRouteChildren {
+  AnalysisIdRouteRoute: typeof AnalysisIdRouteRoute
+}
+
+const AnalysisRouteChildren: AnalysisRouteChildren = {
+  AnalysisIdRouteRoute: AnalysisIdRouteRoute,
+}
+
+const AnalysisRouteWithChildren = AnalysisRoute._addFileChildren(
+  AnalysisRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AnalysisRouteRoute: AnalysisRouteRoute,
   ProfileRouteRoute: ProfileRouteRoute,
+  AnalysisRoute: AnalysisRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

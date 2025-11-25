@@ -251,6 +251,104 @@
           "Chat"
         ]
       }
+    },
+    "/api/chat/test-ai": {
+      "post": {
+        "description": "Test AI with the provided message",
+        "operationId": "testAi",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestAiDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "AI response generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "summary": "Test AI",
+        "tags": [
+          "Chat"
+        ]
+      }
+    },
+    "/api/analytics/recent": {
+      "get": {
+        "operationId": "AnalyticsController_getRecentAnalyses",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns list of recent analyses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnalyzeShortType"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get most recent cached analyses",
+        "tags": [
+          "Analytics"
+        ]
+      }
+    },
+    "/api/analytics/analyze-stream": {
+      "post": {
+        "operationId": "AnalyticsController_analyzeStream",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalyzeMarketDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Analysis stream successfully created"
+          }
+        },
+        "summary": "Analyze Polymarket event with streaming",
+        "tags": [
+          "Analytics"
+        ]
+      }
     }
   },
   "info": {
@@ -556,6 +654,86 @@
         },
         "required": [
           "walletAddress"
+        ]
+      },
+      "TestAiDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Message to send to AI",
+            "example": "Hello, AI!"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "AnalyzeShortType": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Event slug for URL construction",
+            "example": "will-bitcoin-reach-100k-by-december-2024"
+          },
+          "title": {
+            "type": "string",
+            "description": "Event title",
+            "example": "Will Bitcoin reach $100k by December 2024?"
+          },
+          "description": {
+            "type": "string",
+            "description": "Event description",
+            "example": "This market will resolve to \"Yes\" if Bitcoin reaches $100,000 USD..."
+          },
+          "image": {
+            "type": "string",
+            "description": "Event image URL",
+            "example": "https://polymarket-upload.s3.us-east-2.amazonaws.com/bitcoin.png"
+          }
+        },
+        "required": [
+          "slug",
+          "title",
+          "description",
+          "image"
+        ]
+      },
+      "AnalyzeMarketDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Polymarket event URL",
+            "example": "https://polymarket.com/event/solana-above-on-november-15?tid=1763209802656"
+          },
+          "id": {
+            "type": "string",
+            "description": "AI SDK event ID (optional)",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "messages": {
+            "description": "AI SDK messages (optional)",
+            "example": [
+              {
+                "role": "user",
+                "content": "Hello, AI!"
+              }
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "trigger": {
+            "type": "string",
+            "description": "AI SDK trigger (optional)",
+            "example": "submit-message"
+          }
+        },
+        "required": [
+          "url"
         ]
       }
     }

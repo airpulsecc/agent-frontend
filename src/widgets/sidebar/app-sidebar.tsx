@@ -6,11 +6,6 @@ import { Link, useLocation } from "@tanstack/react-router";
 // Menu items.
 const items = [
   {
-    title: "Analysis",
-    url: "/analysis",
-    icon: Brain,
-  },
-  {
     title: "Profile",
     url: "/profile",
     icon: CircleUser,
