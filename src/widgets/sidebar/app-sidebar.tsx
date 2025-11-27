@@ -6,7 +6,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 // Menu items.
 const items = [
   {
-    title: "Recent",
+    title: "Recent analyses",
     url: "/recent",
     icon: Clock,
   },
