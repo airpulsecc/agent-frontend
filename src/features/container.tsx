@@ -1,6 +1,6 @@
 import { Text, Input, Button, Avatar, Card } from "@/shared/ui";
 import { ArrowRight, TrendingUp, Zap, BarChart3 } from "lucide-react";
-import { PolymarketLogo } from "@/assets/icons";
+import { PolymarketLogo, PolymarketLogoFull } from "@/assets/icons";
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useAnalyticsControllerGetRecentAnalyses } from "@/api";
@@ -116,7 +116,7 @@ const Container = () => {
       <div className="relative z-10 flex w-full max-w-2xl flex-col items-center space-y-8">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <PolymarketLogo className="size-10 text-primary" />
+          <PolymarketLogoFull className="h-5 text-primary" />
         </div>
         {/* Heading */}
         <div className="space-y-3 text-center">
