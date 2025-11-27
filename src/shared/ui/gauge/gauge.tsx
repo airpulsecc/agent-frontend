@@ -45,14 +45,8 @@ function GaugeRoot({
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div
-      data-slot="gauge"
-      className={cn(gaugeVariants({ size }), className)}
-    >
-      <svg
-        className="size-full -rotate-90"
-        viewBox="0 0 100 100"
-      >
+    <div data-slot="gauge" className={cn(gaugeVariants({ size }), className)}>
+      <svg className="size-full -rotate-90" viewBox="0 0 100 100">
         <circle
           className="text-muted"
           strokeWidth={strokeWidth}

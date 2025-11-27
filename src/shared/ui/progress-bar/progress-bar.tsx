@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
+import Big from "big.js";
 
 const progressBarVariants = cva(
   "relative w-full overflow-hidden rounded-full bg-muted",
@@ -36,18 +37,32 @@ function ProgressBarRoot({
   className,
   indicatorClassName,
 }: ProgressBarProps) {
-  const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+  // Используем big.js для точных вычислений без округления
+  const bigValue = new Big(value);
+  const bigMax = new Big(max);
+  const bigHundred = new Big(100);
+
+  // Вычисляем процент: (value / max) * 100
+  const rawPercentage = bigValue.div(bigMax).times(100);
+
+  // Ограничиваем диапазон от 0 до 100
+  let percentage: Big;
+  if (rawPercentage.lt(0)) {
+    percentage = new Big(0);
+  } else if (rawPercentage.gt(100)) {
+    percentage = bigHundred;
+  } else {
+    percentage = rawPercentage;
+  }
 
   return (
     <div data-slot="progress-bar" className="w-full space-y-1.5">
       {(label || showValue) && (
         <div className="flex items-center justify-between text-sm">
-          {label && (
-            <span className="text-muted-foreground">{label}</span>
-          )}
+          {label && <span className="text-muted-foreground">{label}</span>}
           {showValue && (
             <span className="font-medium text-foreground">
-              {Math.round(percentage)}%
+              {percentage.toString()}%
             </span>
           )}
         </div>
@@ -59,7 +74,7 @@ function ProgressBarRoot({
             "h-full rounded-full bg-primary transition-all duration-500 ease-out",
             indicatorClassName
           )}
-          style={{ width: `${percentage}%` }}
+          style={{ width: `${percentage.toString()}%` }}
         />
       </div>
     </div>
@@ -76,21 +91,30 @@ function CompareProgressBar({
   size = "default",
   className,
 }: CompareProgressBarProps) {
-  const total = values.reduce((acc, v) => acc + v.value, 0);
+  // Используем big.js для суммирования значений
+  const total = values.reduce(
+    (acc, v) => acc.plus(new Big(v.value)),
+    new Big(0)
+  );
 
   return (
     <div data-slot="compare-progress-bar" className="w-full space-y-2">
       <div className={cn(progressBarVariants({ size }), "flex", className)}>
         {values.map((item, index) => {
-          const percentage = total > 0 ? (item.value / total) * 100 : 0;
+          // Вычисляем процент: (value / total) * 100
+          const percentage = total.gt(0)
+            ? new Big(item.value).div(total).times(100)
+            : 0;
+
           return (
             <div
               key={item.label}
               className={cn(
                 "h-full transition-all duration-500 ease-out first:rounded-l-full last:rounded-r-full",
-                item.color || (index === 0 ? "bg-primary" : "bg-muted-foreground/30")
+                item.color ||
+                  (index === 0 ? "bg-primary" : "bg-muted-foreground/30")
               )}
-              style={{ width: `${percentage}%` }}
+              style={{ width: `${percentage.toString()}%` }}
             />
           );
         })}
@@ -99,15 +123,10 @@ function CompareProgressBar({
         {values.map((item) => (
           <div key={item.label} className="flex items-center gap-1.5">
             <div
-              className={cn(
-                "size-2 rounded-full",
-                item.color || "bg-primary"
-              )}
+              className={cn("size-2 rounded-full", item.color || "bg-primary")}
             />
             <span>{item.label}</span>
-            <span className="font-medium text-foreground">
-              {Math.round(item.value)}%
-            </span>
+            <span className="font-medium text-foreground">{item.value}%</span>
           </div>
         ))}
       </div>

@@ -132,7 +132,6 @@ export type TopMarket = {
   image?: string;
   volume?: string;
   winChance?: number;
-  winChancePercent?: string;
 };
 
 export type BetInfo = {
@@ -157,8 +156,6 @@ export type AnalysisStreamMessage = UIMessage<
 >;
 
 function MarketCard({ market }: { market: TopMarket }) {
-  const winChance = market.winChance || 0;
-
   return (
     <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
       <Card.Content className="p-4">
@@ -192,10 +189,12 @@ function MarketCard({ market }: { market: TopMarket }) {
                   Win Chance
                 </Text>
                 <Badge
-                  variant={winChance > 50 ? "default" : "secondary"}
+                  variant={
+                    Number(market.winChance) > 50 ? "success" : "default"
+                  }
                   size="sm"
                 >
-                  {market.winChancePercent}
+                  {market.winChance}%
                 </Badge>
               </div>
             </div>
@@ -343,7 +342,7 @@ function RouteComponent() {
         }
       );
     }
-  }, [id, sendMessage]);
+  }, [id]);
 
   return (
     <div className="container mx-auto max-w-4xl space-y-6 px-4 py-8 pt-[140px]">
@@ -413,7 +412,7 @@ function RouteComponent() {
                     {topMarkets && topMarkets.length > 0 && (
                       <section className="space-y-4">
                         <div className="flex items-center gap-2">
-                          <Text className="font-semibold">Markets</Text>
+                          <Text variant="lg">Markets</Text>
                           <Badge variant="outline" size="sm">
                             Polymarket data
                           </Badge>
@@ -430,12 +429,8 @@ function RouteComponent() {
                           <ProgressBar.Compare
                             size="lg"
                             values={topMarkets.slice(0, 2).map((m, i) => ({
-                              label: m.title || `Option ${i + 1}`,
-                              value: (m.winChance || 0) * 100,
-                              color:
-                                i === 0
-                                  ? "bg-primary"
-                                  : "bg-muted-foreground/40",
+                              label: m.title!,
+                              value: m.winChance || 0,
                             }))}
                           />
                         )}
