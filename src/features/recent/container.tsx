@@ -1,7 +1,7 @@
 import { Text, ScrollArea, Avatar } from "@/shared/ui";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { useAnalyticsControllerGetRecentAnalyses } from "@/api";
+import { useGetRecentAnalyses } from "@/api";
 import { DefaultLayout } from "@/layouts/default-layout";
 
 function RecentAnalysisCard({
@@ -45,8 +45,7 @@ function RecentAnalysisCard({
 }
 
 const RecentContainer = () => {
-  const { data: recentAnalyses, isLoading } =
-    useAnalyticsControllerGetRecentAnalyses();
+  const { data: recentAnalyses, isLoading } = useGetRecentAnalyses();
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">

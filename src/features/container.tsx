@@ -3,7 +3,7 @@ import { ArrowRight, TrendingUp, Zap, BarChart3 } from "lucide-react";
 import { PolymarketLogoFull } from "@/assets/icons";
 import { type FC, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useAnalyticsControllerGetRecentAnalyses } from "@/api";
+import { useGetRecentAnalyses } from "@/api";
 import { cn } from "@/lib/utils";
 import { CentredLayout } from "@/layouts/centred-layout";
 
@@ -85,8 +85,8 @@ function extractSlugFromUrl(input: string): string | null {
 }
 
 const Container: FC = () => {
-  const { data: recentAnalyses } = useAnalyticsControllerGetRecentAnalyses({
-    limit: 5,
+  const { data: recentAnalyses } = useGetRecentAnalyses({
+    limit: 10,
   });
   const [url, setUrl] = useState("");
   const [error, setError] = useState<string | null>(null);

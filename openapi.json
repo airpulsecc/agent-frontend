@@ -293,13 +293,15 @@
     },
     "/api/analytics/recent": {
       "get": {
-        "operationId": "AnalyticsController_getRecentAnalyses",
+        "operationId": "getRecentAnalyses",
         "parameters": [
           {
             "name": "limit",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Maximum number of analyses to return. If 0 or not provided, returns all analyses.",
             "schema": {
+              "example": 3,
               "type": "number"
             }
           }
