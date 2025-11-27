@@ -59,29 +59,29 @@ function RecentAnalysisCard({
 function extractSlugFromUrl(input: string): string | null {
   const trimmed = input.trim();
 
-  // Try to parse as URL
+  // Must be a valid URL
   try {
     const url = new URL(trimmed);
-    // Check if it's a polymarket URL
-    if (
-      url.hostname === "polymarket.com" ||
-      url.hostname === "www.polymarket.com"
-    ) {
-      // Extract slug from pathname like /event/slug-here
-      const match = url.pathname.match(/^\/event\/([^/?]+)/);
-      if (match) {
-        return match[1];
-      }
-    }
-  } catch {
-    // Not a valid URL, check if it's already a slug
-    // Slug format: lowercase letters, numbers, and hyphens
-    if (/^[a-z0-9-]+$/.test(trimmed)) {
-      return trimmed;
-    }
-  }
 
-  return null;
+    // Must be a polymarket URL
+    if (
+      url.hostname !== "polymarket.com" &&
+      url.hostname !== "www.polymarket.com"
+    ) {
+      return null;
+    }
+
+    // Extract slug from pathname like /event/slug-here
+    const match = url.pathname.match(/^\/event\/([^/?]+)/);
+    if (match && match[1]) {
+      return match[1];
+    }
+
+    return null;
+  } catch {
+    // Not a valid URL
+    return null;
+  }
 }
 
 const Container: FC = () => {
