@@ -1,10 +1,11 @@
 import { Text, Input, Button, Avatar, Card, ScrollArea } from "@/shared/ui";
 import { ArrowRight, TrendingUp, Zap, BarChart3 } from "lucide-react";
-import { PolymarketLogo, PolymarketLogoFull } from "@/assets/icons";
-import { useState } from "react";
+import { PolymarketLogoFull } from "@/assets/icons";
+import { type FC, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useAnalyticsControllerGetRecentAnalyses } from "@/api";
 import { cn } from "@/lib/utils";
+import { CentredLayout } from "@/layouts/centred-layout";
 
 function FeaturePill({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
@@ -83,7 +84,7 @@ function extractSlugFromUrl(input: string): string | null {
   return null;
 }
 
-const Container = () => {
+const Container: FC = () => {
   const { data: recentAnalyses } = useAnalyticsControllerGetRecentAnalyses({
     limit: 5,
   });
@@ -107,7 +108,7 @@ const Container = () => {
   };
 
   return (
-    <div className="relative flex min-h-[80vh] w-full flex-col items-center justify-center px-4">
+    <CentredLayout>
       {/* Subtle gradient background */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-1/2 size-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[120px]" />
@@ -197,7 +198,12 @@ const Container = () => {
                 </Link>
               </Button>
             </div>
-            <ScrollArea className="h-[190px] w-full rounded-xl">
+            <ScrollArea
+              className={cn(
+                "w-full rounded-xl",
+                recentAnalyses.length > 1 ? "h-[190px]" : "h-[84px]"
+              )}
+            >
               <div className="space-y-2 pr-4">
                 {recentAnalyses.map((analysis) => (
                   <RecentAnalysisCard
@@ -213,7 +219,7 @@ const Container = () => {
           </div>
         )}
       </div>
-    </div>
+    </CentredLayout>
   );
 };
 

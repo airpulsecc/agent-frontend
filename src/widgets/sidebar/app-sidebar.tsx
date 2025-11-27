@@ -10,11 +10,11 @@ const items = [
     url: "/recent",
     icon: Clock,
   },
-  {
-    title: "Profile",
-    url: "/profile",
-    icon: CircleUser,
-  },
+  // {
+  //   title: "Profile",
+  //   url: "/profile",
+  //   icon: CircleUser,
+  // },
 ];
 
 export function AppSidebar() {

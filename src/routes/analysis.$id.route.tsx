@@ -27,6 +27,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Streamdown } from "streamdown";
 import { useEffect, useRef } from "react";
+import { DefaultLayout } from "@/layouts/default-layout";
 
 export const Route = createFileRoute("/analysis/$id")({
   component: RouteComponent,
@@ -345,130 +346,135 @@ function RouteComponent() {
   }, [id]);
 
   return (
-    <div className="container mx-auto max-w-4xl space-y-6 px-4 py-8 pt-[140px]">
-      {messages
-        .filter((message) => message.role === "assistant")
-        .map((message) =>
-          message.parts.map((part) => {
-            switch (part.type) {
-              case "data-research-agent": {
-                const topMarkets = part.data.topMarkets;
-                const status = part.data.status;
-                const result = part.data.result;
-                const textAnalysis = part.data.textAnalysis;
-                const betInfo = part.data.betInfo;
+    <DefaultLayout>
+      <div className="container mx-auto max-w-4xl space-y-6 px-4 py-8">
+        {messages
+          .filter((message) => message.role === "assistant")
+          .map((message) =>
+            message.parts.map((part) => {
+              switch (part.type) {
+                case "data-research-agent": {
+                  const topMarkets = part.data.topMarkets;
+                  const status = part.data.status;
+                  const result = part.data.result;
+                  const textAnalysis = part.data.textAnalysis;
+                  const betInfo = part.data.betInfo;
 
-                return (
-                  <div key={part.id} className="space-y-6">
-                    {/* Header */}
-                    {betInfo && (betInfo.title || betInfo.description) && (
-                      <div className="space-y-2">
-                        {betInfo.title && (
-                          <Text
-                            as="h1"
-                            className="text-2xl font-bold md:text-3xl"
-                          >
-                            {betInfo.title}
-                          </Text>
-                        )}
-                        {betInfo.description && (
-                          <Text className="text-muted-foreground">
-                            {betInfo.description}
-                          </Text>
-                        )}
-                      </div>
-                    )}
+                  return (
+                    <div key={part.id} className="space-y-6">
+                      {/* Header */}
+                      {betInfo && (betInfo.title || betInfo.description) && (
+                        <div className="space-y-2">
+                          {betInfo.title && (
+                            <Text
+                              as="h1"
+                              className="text-2xl font-bold md:text-3xl"
+                            >
+                              {betInfo.title}
+                            </Text>
+                          )}
+                          {betInfo.description && (
+                            <Text className="text-muted-foreground">
+                              {betInfo.description}
+                            </Text>
+                          )}
+                        </div>
+                      )}
 
-                    {/* Progress */}
-                    {status && status !== "completed" && (
-                      <ProgressSteps status={status} />
-                    )}
+                      {/* Progress */}
+                      {status && status !== "completed" && (
+                        <ProgressSteps status={status} />
+                      )}
 
-                    {/* Research Reasoning */}
-                    {textAnalysis && (
-                      <Collapsible defaultOpen={false}>
-                        <Collapsible.Trigger className="flex w-full items-center gap-2 rounded-xl border border-border/50 bg-card/50 p-4 text-sm backdrop-blur-sm transition-all hover:bg-card/70 [&[data-state=open]>svg:last-child]:rotate-180">
-                          <BrainIcon className="size-4 text-primary" />
-                          <span className="flex-1 text-left font-medium">
-                            {status === "completed" ? (
-                              "Analysis Reasoning"
-                            ) : (
-                              <ShimmeringText text="Analyzing market data..." />
-                            )}
-                          </span>
-                          <ChevronDownIcon className="size-4 text-muted-foreground transition-transform duration-200" />
-                        </Collapsible.Trigger>
-                        <Collapsible.Content className="overflow-hidden data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out data-[state=open]:fade-in data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2">
-                          <div className="mt-3 rounded-xl border border-border/50 bg-card/30 p-4">
-                            <div className="prose prose-sm prose-invert max-w-none text-muted-foreground">
-                              <Streamdown>{textAnalysis}</Streamdown>
+                      {/* Research Reasoning */}
+                      {textAnalysis && (
+                        <Collapsible defaultOpen={false}>
+                          <Collapsible.Trigger className="flex w-full items-center gap-2 rounded-xl border border-border/50 bg-card/50 p-4 text-sm backdrop-blur-sm transition-all hover:bg-card/70 [&[data-state=open]>svg:last-child]:rotate-180">
+                            <BrainIcon className="size-4 text-primary" />
+                            <span className="flex-1 text-left font-medium">
+                              {status === "completed" ? (
+                                "Analysis Reasoning"
+                              ) : (
+                                <ShimmeringText text="Analyzing market data..." />
+                              )}
+                            </span>
+                            <ChevronDownIcon className="size-4 text-muted-foreground transition-transform duration-200" />
+                          </Collapsible.Trigger>
+                          <Collapsible.Content className="overflow-hidden data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out data-[state=open]:fade-in data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2">
+                            <div className="mt-3 rounded-xl border border-border/50 bg-card/30 p-4">
+                              <div className="prose prose-sm prose-invert max-w-none text-muted-foreground">
+                                <Streamdown>{textAnalysis}</Streamdown>
+                              </div>
                             </div>
+                          </Collapsible.Content>
+                        </Collapsible>
+                      )}
+
+                      {/* Markets */}
+                      {topMarkets && topMarkets.length > 0 && (
+                        <section className="space-y-4">
+                          <div className="flex items-center gap-2">
+                            <Text variant="lg">Markets</Text>
+                            <Badge variant="outline" size="sm">
+                              Polymarket data
+                            </Badge>
                           </div>
-                        </Collapsible.Content>
-                      </Collapsible>
-                    )}
 
-                    {/* Markets */}
-                    {topMarkets && topMarkets.length > 0 && (
-                      <section className="space-y-4">
-                        <div className="flex items-center gap-2">
-                          <Text variant="lg">Markets</Text>
-                          <Badge variant="outline" size="sm">
-                            Polymarket data
-                          </Badge>
-                        </div>
+                          <div className="grid gap-3 sm:grid-cols-2">
+                            {topMarkets.map((market) => (
+                              <MarketCard key={market.title} market={market} />
+                            ))}
+                          </div>
 
-                        <div className="grid gap-3 sm:grid-cols-2">
-                          {topMarkets.map((market) => (
-                            <MarketCard key={market.title} market={market} />
-                          ))}
-                        </div>
+                          {/* Compare bar for top 2 markets */}
+                          {topMarkets.length >= 2 && (
+                            <ProgressBar.Compare
+                              size="lg"
+                              values={topMarkets.slice(0, 2).map((m, i) => ({
+                                label: m.title!,
+                                value: m.winChance || 0,
+                              }))}
+                            />
+                          )}
+                        </section>
+                      )}
 
-                        {/* Compare bar for top 2 markets */}
-                        {topMarkets.length >= 2 && (
-                          <ProgressBar.Compare
-                            size="lg"
-                            values={topMarkets.slice(0, 2).map((m, i) => ({
-                              label: m.title!,
-                              value: m.winChance || 0,
-                            }))}
+                      {/* Predictions */}
+                      {result?.predictions && result.predictions.length > 0 && (
+                        <section className="space-y-4">
+                          <Text variant="xl">AI Predictions</Text>
+
+                          <div className="space-y-3">
+                            {result.predictions.map((prediction, idx) => (
+                              <PredictionCard
+                                key={idx}
+                                prediction={prediction}
+                              />
+                            ))}
+                          </div>
+                        </section>
+                      )}
+
+                      {/* Voices */}
+                      {result && (result.topVoices || result.crowdVoices) && (
+                        <section className="space-y-4">
+                          <Text variant="xl">Social Sentiment</Text>
+                          <VoicesSection
+                            topVoices={result.topVoices}
+                            crowdVoices={result.crowdVoices}
                           />
-                        )}
-                      </section>
-                    )}
-
-                    {/* Predictions */}
-                    {result?.predictions && result.predictions.length > 0 && (
-                      <section className="space-y-4">
-                        <Text variant="xl">AI Predictions</Text>
-
-                        <div className="space-y-3">
-                          {result.predictions.map((prediction, idx) => (
-                            <PredictionCard key={idx} prediction={prediction} />
-                          ))}
-                        </div>
-                      </section>
-                    )}
-
-                    {/* Voices */}
-                    {result && (result.topVoices || result.crowdVoices) && (
-                      <section className="space-y-4">
-                        <Text variant="xl">Social Sentiment</Text>
-                        <VoicesSection
-                          topVoices={result.topVoices}
-                          crowdVoices={result.crowdVoices}
-                        />
-                      </section>
-                    )}
-                  </div>
-                );
+                        </section>
+                      )}
+                    </div>
+                  );
+                }
+                default: {
+                  return null;
+                }
               }
-              default: {
-                return null;
-              }
-            }
-          })
-        )}
-    </div>
+            })
+          )}
+      </div>
+    </DefaultLayout>
   );
 }

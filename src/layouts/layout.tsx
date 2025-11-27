@@ -10,9 +10,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <Sidebar.Inset>
         <Header />
 
-        <div className="flex grow flex-col items-center justify-center">
-          {children}
-        </div>
+        {children}
       </Sidebar.Inset>
     </Sidebar.Provider>
   );

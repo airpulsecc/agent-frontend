@@ -1,6 +1,13 @@
-import { RecentContainer } from '@/features/recent/container'
-import { createFileRoute } from '@tanstack/react-router'
+import { RecentContainer } from "@/features/recent/container";
+import { DefaultLayout } from "@/layouts/default-layout";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/recent')({
-  component: RecentContainer,
-})
+export const Route = createFileRoute("/recent")({
+  component: () => {
+    return (
+      <DefaultLayout>
+        <RecentContainer />
+      </DefaultLayout>
+    );
+  },
+});
