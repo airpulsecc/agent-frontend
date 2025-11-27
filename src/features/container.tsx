@@ -1,4 +1,4 @@
-import { Text, Input, Button, Avatar, Card } from "@/shared/ui";
+import { Text, Input, Button, Avatar, Card, ScrollArea } from "@/shared/ui";
 import { ArrowRight, TrendingUp, Zap, BarChart3 } from "lucide-react";
 import { PolymarketLogo, PolymarketLogoFull } from "@/assets/icons";
 import { useState } from "react";
@@ -168,7 +168,7 @@ const Container = () => {
               }}
             />
             <Button
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg"
+              className="absolute end-2 top-1/2 -translate-y-1/2 rounded-lg"
               size="default"
               onClick={handleAnalyze}
               disabled={!url.trim()}
@@ -177,25 +177,39 @@ const Container = () => {
               <ArrowRight className="size-4" />
             </Button>
           </div>
-          {error && <Text className="text-sm text-destructive">{error}</Text>}
+          {error && (
+            <Text variant="sm" color="destructive">
+              {error}
+            </Text>
+          )}
         </div>
         {/* Recent Analyses */}
         {recentAnalyses && recentAnalyses.length > 0 && (
           <div className="w-full space-y-3">
-            <Text className="text-sm text-muted-foreground">
-              Recent analyses
-            </Text>
-            <div className="space-y-2">
-              {recentAnalyses.slice(0, 3).map((analysis) => (
-                <RecentAnalysisCard
-                  key={analysis.slug}
-                  title={analysis.title}
-                  description={analysis.description}
-                  image={analysis.image}
-                  slug={analysis.slug}
-                />
-              ))}
+            <div className="flex items-center justify-between">
+              <Text variant="sm" color="secondary">
+                Recent analyses
+              </Text>
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/recent">
+                  Show more
+                  <ArrowRight className="size-3" />
+                </Link>
+              </Button>
             </div>
+            <ScrollArea className="h-[190px] w-full rounded-xl">
+              <div className="space-y-2 pr-4">
+                {recentAnalyses.map((analysis) => (
+                  <RecentAnalysisCard
+                    key={analysis.slug}
+                    title={analysis.title}
+                    description={analysis.description}
+                    image={analysis.image}
+                    slug={analysis.slug}
+                  />
+                ))}
+              </div>
+            </ScrollArea>
           </div>
         )}
       </div>

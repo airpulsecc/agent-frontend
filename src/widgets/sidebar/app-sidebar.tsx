@@ -1,10 +1,15 @@
-import { Brain, CircleUser } from "lucide-react";
+import { Brain, CircleUser, Clock } from "lucide-react";
 import { Sidebar, Text } from "@/shared/ui";
 import { LogoMini } from "@/assets/icons";
 import { Link, useLocation } from "@tanstack/react-router";
 
 // Menu items.
 const items = [
+  {
+    title: "Recent",
+    url: "/recent",
+    icon: Clock,
+  },
   {
     title: "Profile",
     url: "/profile",
