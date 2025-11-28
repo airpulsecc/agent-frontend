@@ -171,6 +171,38 @@ src/
 - **Constants**: SCREAMING_SNAKE_CASE
 - **Data attributes**: Use `data-slot` for component identification
 
+### Component Declaration Style (MANDATORY)
+
+**ALWAYS** use arrow functions with `FC` type for component declarations:
+
+```typescript
+// CORRECT - Always use this pattern
+import type { FC } from "react";
+
+type MyComponentProps = {
+  title: string;
+  description?: string;
+};
+
+const MyComponent: FC<MyComponentProps> = ({ title, description }) => {
+  return (
+    <div>
+      <h1>{title}</h1>
+      {description && <p>{description}</p>}
+    </div>
+  );
+};
+
+export { MyComponent };
+```
+
+```typescript
+// WRONG - Never use function declarations
+function MyComponent({ title }: MyComponentProps) {
+  return <div>{title}</div>;
+}
+```
+
 ## Important Notes
 
 1. This is a Vite project, NOT Next.js - use TanStack Router patterns

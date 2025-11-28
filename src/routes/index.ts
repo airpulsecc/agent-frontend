@@ -1,5 +1,4 @@
-import { Container } from "@/features/container";
-import { CentredLayout } from "@/layouts/centred-layout";
+import { Container } from "@/features/landing/container";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
