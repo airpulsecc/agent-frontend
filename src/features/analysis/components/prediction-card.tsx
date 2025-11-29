@@ -13,7 +13,11 @@ const PredictionCard: FC<PredictionCardProps> = ({ prediction }) => {
     <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
       <Card.Content className="p-5">
         <div className="flex items-start gap-5">
-          <Gauge value={winChance} size="default" />
+          <Gauge
+            value={winChance}
+            variant={winChance > 50 ? "success" : "default"}
+            size="default"
+          />
 
           <div className="min-w-0 flex-1 space-y-2">
             <Text className="font-semibold">{prediction.marketTitle}</Text>

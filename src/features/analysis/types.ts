@@ -5,6 +5,7 @@ export type AnalysisStatus =
   | "creating-prompt"
   | "analyzing-sentiment"
   | "structuring-response"
+  | "error"
   | "completed";
 
 export type AnalysisStep = {
@@ -53,6 +54,10 @@ export type ResearchAgentData = {
   result?: AnalysisResult;
   betInfo?: BetInfo;
   textAnalysis?: string;
+  error?: {
+    code: string;
+    message: string;
+  };
 };
 
 export type AnalysisStreamMessage = UIMessage<
