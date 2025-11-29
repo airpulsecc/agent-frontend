@@ -14,12 +14,13 @@ type AnalysisContentProps = {
 };
 
 const AnalysisContent: FC<AnalysisContentProps> = ({ data }) => {
-  const { status, topMarkets, result, textAnalysis, betInfo, error } = data;
+  const { status, topMarkets, result, textAnalysis, betInfo, date, error } =
+    data;
 
   if (status === "error" && error) {
     return (
       <div className="space-y-6">
-        <AnalysisHeader betInfo={betInfo} />
+        <AnalysisHeader betInfo={betInfo} date={date} />
         <Alert variant="destructive">
           <AlertCircle />
           <Alert.Title>Analysis Error</Alert.Title>
@@ -31,7 +32,7 @@ const AnalysisContent: FC<AnalysisContentProps> = ({ data }) => {
 
   return (
     <div className="space-y-6">
-      <AnalysisHeader betInfo={betInfo} />
+      <AnalysisHeader betInfo={betInfo} date={date} />
 
       {status && status !== "completed" && <ProgressSteps status={status} />}
 

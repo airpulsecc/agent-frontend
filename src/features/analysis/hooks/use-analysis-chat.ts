@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
+import { toast } from "sonner";
 import type { AnalysisStreamMessage } from "../types";
 
 type UseAnalysisChatOptions = {
@@ -35,6 +36,26 @@ const useAnalysisChat = ({ eventId }: UseAnalysisChatOptions) => {
   const assistantMessages = messages.filter(
     (message) => message.role === "assistant"
   );
+
+  const hasShownToast = useRef(false);
+
+  useEffect(() => {
+    if (hasShownToast.current) return;
+
+    for (const message of assistantMessages) {
+      for (const part of message.parts) {
+        if (
+          part.type === "data-research-agent" &&
+          part.data.status === "completed" &&
+          part.data.cached === false
+        ) {
+          hasShownToast.current = true;
+          toast.success("Analysis completed");
+          return;
+        }
+      }
+    }
+  }, [assistantMessages]);
 
   return {
     messages: assistantMessages,

@@ -54,6 +54,8 @@ export type ResearchAgentData = {
   result?: AnalysisResult;
   betInfo?: BetInfo;
   textAnalysis?: string;
+  date?: string;
+  cached?: boolean;
   error?: {
     code: string;
     message: string;

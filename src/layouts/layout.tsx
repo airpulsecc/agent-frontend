@@ -1,4 +1,4 @@
-import { Sidebar } from "@/shared/ui";
+import { Sidebar, Toaster } from "@/shared/ui";
 import { AppSidebar } from "@/widgets/sidebar";
 import { Header } from "@/widgets/header";
 
@@ -12,6 +12,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
         {children}
       </Sidebar.Inset>
+
+      <Toaster />
     </Sidebar.Provider>
   );
 }

@@ -1,5 +1,7 @@
 import type { FC } from "react";
+import { toast } from "sonner";
 import { useGetRecentAnalyses } from "@/api";
+import { Button } from "@/shared/ui/button";
 import { CentredLayout } from "@/layouts/centred-layout";
 import { HeroSection } from "./components/hero-section";
 import { AnalyzeInput } from "./components/analyze-input";
