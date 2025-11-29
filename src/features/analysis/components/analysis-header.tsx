@@ -1,5 +1,7 @@
 import type { FC } from "react";
-import { Text } from "@/shared/ui";
+import { Share2 } from "lucide-react";
+import { useCopy } from "@/hooks/use-copy";
+import { Text, Button, Tooltip } from "@/shared/ui";
 import type { BetInfo } from "../types";
 
 type AnalysisHeaderProps = {
@@ -19,10 +21,25 @@ const formatDate = (dateString: string): string => {
 };
 
 const AnalysisHeader: FC<AnalysisHeaderProps> = ({ betInfo, date }) => {
+  const [copied, copy] = useCopy();
+
+  const handleShare = () => copy(window.location.href);
+
   if (!betInfo || (!betInfo.title && !betInfo.description)) return null;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-6">
+      <div className="flex items-center justify-end">
+        <Tooltip open={copied}>
+          <Tooltip.Trigger asChild>
+            <Button size="sm" onClick={handleShare}>
+              <Share2 className="size-4" />
+              Share
+            </Button>
+          </Tooltip.Trigger>
+          <Tooltip.Content>Link copied!</Tooltip.Content>
+        </Tooltip>
+      </div>
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-2">
           {betInfo.title && (
