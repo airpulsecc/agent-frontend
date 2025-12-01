@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { Share2 } from "lucide-react";
 import { useCopy } from "@/hooks/use-copy";
 import { Text, Button, Tooltip } from "@/shared/ui";
+import { events, useTrack } from "@/lib/posthog";
 import type { BetInfo } from "../types";
 
 type AnalysisHeaderProps = {
@@ -21,9 +22,13 @@ const formatDate = (dateString: string): string => {
 };
 
 const AnalysisHeader: FC<AnalysisHeaderProps> = ({ betInfo, date }) => {
+  const track = useTrack();
   const [copied, copy] = useCopy();
 
-  const handleShare = () => copy(window.location.href);
+  const handleShare = () => {
+    track(events.SHARE_CLICK);
+    copy(window.location.href);
+  };
 
   if (!betInfo || (!betInfo.title && !betInfo.description)) return null;
 

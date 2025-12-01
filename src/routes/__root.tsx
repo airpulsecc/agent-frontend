@@ -1,8 +1,13 @@
-import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
+import {
+  createRootRouteWithContext,
+  Outlet,
+  useLocation,
+} from "@tanstack/react-router";
+import { lazy, Suspense, useEffect } from "react";
 
 import { type RouterContext } from "@/router";
 import { Layout } from "@/layouts/layout";
+import { events, useTrack } from "@/lib/posthog";
 
 const TanStackRouterDevtools = import.meta.env.PROD
   ? () => null
@@ -25,6 +30,13 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootLayout() {
+  const track = useTrack();
+  const location = useLocation();
+
+  useEffect(() => {
+    track(events.PAGE_VIEW, { path: location.pathname });
+  }, [track, location.pathname]);
+
   return (
     <>
       <Layout>

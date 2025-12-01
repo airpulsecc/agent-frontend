@@ -7,6 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { ChevronDown, WalletIcon, LogOut } from "lucide-react";
 import { Button, DropdownMenu } from "@/shared/ui";
 import { formatAddress } from "@/shared/helpers";
+import { events, useTrack } from "@/lib/posthog";
 
 type Props = {
   className?: string;
@@ -17,12 +18,14 @@ const ConnectButton: FC<Props> = ({ className, fullWidth = false }) => {
   const { setShowAuthFlow, handleLogOut } = useDynamicContext();
   const isMobile = useIsMobile();
   const [isOpen, { onOpenChange }] = useDisclosure();
+  const track = useTrack();
 
   const { address, isConnected, isConnecting } = useAccount();
 
   const signIn = useCallback(() => {
+    track(events.CONNECT_CLICK);
     setShowAuthFlow(true);
-  }, [setShowAuthFlow]);
+  }, [setShowAuthFlow, track]);
 
   return (
     <div className={cn("relative", className, fullWidth && "w-full")}>
@@ -44,7 +47,13 @@ const ConnectButton: FC<Props> = ({ className, fullWidth = false }) => {
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Content align="end">
-            <Button onClick={handleLogOut} size="sm">
+            <Button
+              onClick={() => {
+                track(events.DISCONNECT_CLICK);
+                handleLogOut();
+              }}
+              size="sm"
+            >
               <LogOut className="size-4" />
               Disconnect
             </Button>

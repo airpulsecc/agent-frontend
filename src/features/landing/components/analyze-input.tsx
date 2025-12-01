@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Text, Input, Button } from "@/shared/ui";
 import { cn } from "@/lib/utils";
+import { events, useTrack } from "@/lib/posthog";
 
 type AnalyzeInputProps = {
   url: string;
@@ -15,10 +16,17 @@ function AnalyzeInput({
   onUrlChange,
   onAnalyze,
 }: AnalyzeInputProps) {
+  const track = useTrack();
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       onAnalyze();
     }
+  };
+
+  const handleAnalyzeClick = () => {
+    track(events.ANALYZE_CLICK);
+    onAnalyze();
   };
 
   return (
@@ -38,7 +46,7 @@ function AnalyzeInput({
         <Button
           className="absolute end-2 top-1/2 -translate-y-1/2 rounded-lg"
           size="default"
-          onClick={onAnalyze}
+          onClick={handleAnalyzeClick}
           disabled={!url.trim()}
         >
           Analyze

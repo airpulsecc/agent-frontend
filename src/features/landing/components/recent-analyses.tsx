@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Text, Button, ScrollArea, AnalysisCard } from "@/shared/ui";
 import { cn } from "@/lib/utils";
+import { events, useTrack } from "@/lib/posthog";
 import type { FC } from "react";
 
 type Analysis = {
@@ -17,9 +18,15 @@ type RecentAnalysesProps = {
 };
 
 const RecentAnalyses: FC<RecentAnalysesProps> = ({ analyses, isLoading }) => {
+  const track = useTrack();
+
   if (!isLoading && !analyses.length) {
     return null;
   }
+
+  const handleShowMoreClick = () => {
+    track(events.SHOW_MORE_CLICK);
+  };
 
   return (
     <div className="w-full space-y-3">
@@ -27,7 +34,7 @@ const RecentAnalyses: FC<RecentAnalysesProps> = ({ analyses, isLoading }) => {
         <Text variant="sm" color="secondary">
           Recent analyses
         </Text>
-        <Button variant="ghost" size="sm" asChild>
+        <Button variant="ghost" size="sm" asChild onClick={handleShowMoreClick}>
           <Link to="/recent">
             Show more
             <ArrowRight className="size-3" />
