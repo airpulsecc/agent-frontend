@@ -1,5 +1,5 @@
 const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
-  return <div className="pt-[140px]">{children}</div>;
+  return <div className="md:pt-[140px] pt-20">{children}</div>;
 };
 
 export { DefaultLayout };

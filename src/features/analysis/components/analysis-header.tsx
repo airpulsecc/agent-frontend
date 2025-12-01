@@ -40,7 +40,7 @@ const AnalysisHeader: FC<AnalysisHeaderProps> = ({ betInfo, date }) => {
           <Tooltip.Content>Link copied!</Tooltip.Content>
         </Tooltip>
       </div>
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-4">
         <div className="space-y-2">
           {betInfo.title && (
             <Text as="h1" className="text-2xl font-bold md:text-3xl">

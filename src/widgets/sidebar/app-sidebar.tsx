@@ -1,5 +1,5 @@
 import { Brain, CircleUser, Clock } from "lucide-react";
-import { Sidebar, Text } from "@/shared/ui";
+import { Sidebar, Text, useSidebar } from "@/shared/ui";
 import { LogoMini } from "@/assets/icons";
 import { Link, useLocation } from "@tanstack/react-router";
 
@@ -20,6 +20,7 @@ const items = [
 export function AppSidebar() {
   const location = useLocation();
   const isActive = (url: string) => location.pathname === url;
+  const { setOpenMobile } = useSidebar();
 
   return (
     <Sidebar variant="floating" collapsible="icon">
@@ -30,6 +31,7 @@ export function AppSidebar() {
           <Text
             as="span"
             className="group-data-[collapsible=icon]:opacity-0 transition-opacity"
+            onClick={() => setOpenMobile(false)}
           >
             Munar
           </Text>
@@ -41,7 +43,11 @@ export function AppSidebar() {
             <Sidebar.Menu>
               {items.map((item) => (
                 <Sidebar.MenuItem key={item.title}>
-                  <Sidebar.MenuButton asChild isActive={isActive(item.url)}>
+                  <Sidebar.MenuButton
+                    asChild
+                    isActive={isActive(item.url)}
+                    onClick={() => setOpenMobile(false)}
+                  >
                     <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
