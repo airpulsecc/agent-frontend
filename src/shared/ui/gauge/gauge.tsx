@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, getChanceColor } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const gaugeVariants = cva("relative inline-flex items-center justify-center", {
@@ -9,14 +9,9 @@ const gaugeVariants = cva("relative inline-flex items-center justify-center", {
       lg: "size-32",
       xl: "size-40",
     },
-    variant: {
-      default: "[--gauge-color:var(--color-primary)]",
-      success: "[--gauge-color:var(--color-success)]",
-    },
   },
   defaultVariants: {
     size: "default",
-    variant: "default",
   },
 });
 
@@ -39,12 +34,12 @@ function GaugeRoot({
   value,
   max = 100,
   size = "default",
-  variant = "default",
   showValue = true,
   label,
   className,
 }: GaugeProps) {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+  const gaugeColor = getChanceColor(percentage);
   const strokeWidth = strokeWidthMap[size || "default"];
   const radius = 50 - strokeWidth / 2;
   const circumference = 2 * Math.PI * radius;
@@ -53,7 +48,7 @@ function GaugeRoot({
   return (
     <div
       data-slot="gauge"
-      className={cn(gaugeVariants({ size, variant }), className)}
+      className={cn(gaugeVariants({ size }), className)}
     >
       <svg className="size-full -rotate-90" viewBox="0 0 100 100">
         <circle
@@ -67,12 +62,11 @@ function GaugeRoot({
         />
         <circle
           className="transition-all duration-500 ease-out"
-          style={{ color: "var(--gauge-color)" }}
+          style={{ stroke: gaugeColor }}
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
-          stroke="currentColor"
           fill="transparent"
           r={radius}
           cx="50"

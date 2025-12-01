@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, getChanceColor } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import Big from "big.js";
 
@@ -26,6 +26,7 @@ type ProgressBarProps = {
   label?: string;
   className?: string;
   indicatorClassName?: string;
+  dynamicColor?: boolean;
 } & VariantProps<typeof progressBarVariants>;
 
 function ProgressBarRoot({
@@ -36,6 +37,7 @@ function ProgressBarRoot({
   label,
   className,
   indicatorClassName,
+  dynamicColor = false,
 }: ProgressBarProps) {
   // Используем big.js для точных вычислений без округления
   const bigValue = new Big(value);
@@ -55,6 +57,8 @@ function ProgressBarRoot({
     percentage = rawPercentage;
   }
 
+  const percentageNum = percentage.toNumber();
+
   return (
     <div data-slot="progress-bar" className="w-full space-y-1.5">
       {(label || showValue) && (
@@ -71,10 +75,14 @@ function ProgressBarRoot({
         <div
           data-slot="progress-bar-indicator"
           className={cn(
-            "h-full rounded-full bg-primary transition-all duration-500 ease-out",
+            "h-full rounded-full transition-all duration-500 ease-out",
+            !dynamicColor && "bg-primary",
             indicatorClassName
           )}
-          style={{ width: `${percentage.toString()}%` }}
+          style={{
+            width: `${percentage.toString()}%`,
+            ...(dynamicColor && { backgroundColor: getChanceColor(percentageNum) }),
+          }}
         />
       </div>
     </div>

@@ -18,6 +18,7 @@ const badgeVariants = cva(
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         success: "bg-success border-transparent",
+        warning: "bg-warning border-transparent text-foreground",
       },
       size: {
         default: "px-4 py-3",

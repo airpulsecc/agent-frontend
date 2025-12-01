@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import { Card, Text, Badge, NumberFormat } from "@/shared/ui";
+import { getChanceColor } from "@/lib/utils";
 import type { TopMarket } from "../types";
 
 type MarketCardProps = {
@@ -40,10 +41,9 @@ const MarketCard: FC<MarketCardProps> = ({ market }) => {
                   Win Chance
                 </Text>
                 <Badge
-                  variant={
-                    Number(market.winChance) > 50 ? "success" : "default"
-                  }
                   size="sm"
+                  className="border-transparent"
+                  style={{ backgroundColor: getChanceColor(Number(market.winChance)) }}
                 >
                   {market.winChance}%
                 </Badge>
