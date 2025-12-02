@@ -35,11 +35,9 @@ const AnalysisHeader: FC<AnalysisHeaderProps> = ({ betInfo, date }) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-2">
-        {date && (
-          <Text color="secondary" variant="xs">
-            Generated on {formatDate(date)}
-          </Text>
-        )}
+        <Text color="secondary" variant="xs">
+          {date ? `Generated on ${formatDate(date)}` : "Generating..."}
+        </Text>
         <Tooltip open={copied}>
           <Tooltip.Trigger asChild>
             <Button size="sm" onClick={handleShare}>
