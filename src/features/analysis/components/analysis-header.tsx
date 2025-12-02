@@ -1,7 +1,7 @@
 import type { FC } from "react";
-import { Share2 } from "lucide-react";
+import { Share2, Calendar, ArrowRight, Coins, Landmark } from "lucide-react";
 import { useCopy } from "@/hooks/use-copy";
-import { Text, Button, Tooltip } from "@/shared/ui";
+import { Text, Button, Tooltip, Avatar, NumberFormat } from "@/shared/ui";
 import { events, useTrack } from "@/lib/posthog";
 import type { BetInfo } from "../types";
 
@@ -33,8 +33,13 @@ const AnalysisHeader: FC<AnalysisHeaderProps> = ({ betInfo, date }) => {
   if (!betInfo || (!betInfo.title && !betInfo.description)) return null;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-end">
+    <div className="space-y-4">
+      <div className="flex items-center justify-between gap-2">
+        {date && (
+          <Text color="secondary" variant="xs">
+            Generated on {formatDate(date)}
+          </Text>
+        )}
         <Tooltip open={copied}>
           <Tooltip.Trigger asChild>
             <Button size="sm" onClick={handleShare}>
@@ -45,6 +50,47 @@ const AnalysisHeader: FC<AnalysisHeaderProps> = ({ betInfo, date }) => {
           <Tooltip.Content>Link copied!</Tooltip.Content>
         </Tooltip>
       </div>
+      {betInfo.image && (
+        <Avatar size="2xl" rounded="lg">
+          <Avatar.Image src={betInfo.image} rounded="lg" size="2xl" />
+          <Avatar.Fallback rounded="lg" size="2xl">
+            {betInfo.title?.slice(0, 2).toUpperCase()}
+          </Avatar.Fallback>
+        </Avatar>
+      )}
+      {betInfo.volume && (
+        <div className="flex items-center gap-2">
+          <Landmark className="size-5 text-secondary" />
+          <Text color="secondary" variant="md">
+            Volume:{" "}
+            <NumberFormat
+              value={Number(betInfo.volume)}
+              decimalScale={2}
+              currency="$"
+            />
+          </Text>
+        </div>
+      )}
+
+      {betInfo.startDate && betInfo.endDate && (
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Calendar className="size-5 text-secondary" />
+            <Text color="secondary" variant="md">
+              Starts on {formatDate(betInfo.startDate)}
+            </Text>
+          </div>
+
+          <ArrowRight className="size-4 text-secondary" />
+
+          <div className="flex items-center gap-2">
+            <Calendar className="size-4 text-secondary" />
+            <Text color="secondary" variant="md">
+              Ends on {formatDate(betInfo.endDate)}
+            </Text>
+          </div>
+        </div>
+      )}
       <div className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-4">
         <div className="space-y-2">
           {betInfo.title && (
@@ -56,11 +102,6 @@ const AnalysisHeader: FC<AnalysisHeaderProps> = ({ betInfo, date }) => {
             <Text className="text-muted-foreground">{betInfo.description}</Text>
           )}
         </div>
-        {date && (
-          <Text className="text-muted-foreground shrink-0 text-sm">
-            {formatDate(date)}
-          </Text>
-        )}
       </div>
     </div>
   );

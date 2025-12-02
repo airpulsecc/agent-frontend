@@ -45,6 +45,10 @@ export type TopMarket = {
 export type BetInfo = {
   title?: string;
   description?: string;
+  image?: string;
+  startDate?: string;
+  endDate?: string;
+  volume?: string;
 };
 
 export type ResearchAgentData = {

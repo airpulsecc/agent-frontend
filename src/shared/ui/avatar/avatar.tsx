@@ -34,6 +34,7 @@ const imageStyles = cva("aspect-square object-cover", {
       md: "size-12",
       lg: "size-14",
       xl: "size-16",
+      "2xl": "size-20",
     },
     rounded: {
       full: "rounded-full",

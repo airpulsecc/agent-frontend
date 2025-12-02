@@ -14,13 +14,11 @@ const SentimentCard: FC<SentimentCardProps> = ({ opinion, icon }) => {
   return (
     <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
       <Card.Content className="p-4">
-        <div className="flex items-start gap-3">
+        <div className="space-y-3 md:space-y-0 md:flex md:items-start md:gap-3">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
             <Icon className="size-4 text-primary" />
           </div>
-          <Text className="text-sm leading-relaxed text-muted-foreground">
-            {opinion}
-          </Text>
+          <Text className="leading-relaxed">{opinion}</Text>
         </div>
       </Card.Content>
     </Card>
