@@ -35,11 +35,18 @@ export type AnalysisResult = {
   predictions?: MarketPrediction[];
 };
 
+export interface PricePoint {
+  t: number;
+  p: number;
+}
+
+
 export type TopMarket = {
   title?: string;
   image?: string;
   volume?: string;
   winChance?: number;
+  priceHistory?: PricePoint[];
 };
 
 export type BetInfo = {

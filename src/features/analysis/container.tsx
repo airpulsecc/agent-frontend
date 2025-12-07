@@ -10,7 +10,7 @@ const Container: FC<Props> = ({ eventId }) => {
   const { messages } = useAnalysisChat({ eventId });
 
   return (
-    <div className="container mx-auto max-w-4xl space-y-6 px-4 py-8">
+    <div className="container mx-auto max-w-8xl space-y-6 px-4 py-8">
       {messages.map((message) =>
         message.parts.map((part) => {
           if (part.type === "data-research-agent") {

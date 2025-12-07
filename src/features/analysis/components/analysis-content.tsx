@@ -42,11 +42,13 @@ const AnalysisContent: FC<AnalysisContentProps> = ({ data }) => {
 
       {topMarkets && <MarketsSection markets={topMarkets} />}
 
-      {result?.predictions && (
-        <PredictionsSection predictions={result.predictions} />
-      )}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {result?.predictions && (
+          <PredictionsSection predictions={result.predictions} />
+        )}
 
-      {result && <SocialSentimentSection result={result} />}
+        {result && <SocialSentimentSection result={result} />}
+      </div>
     </div>
   );
 };
