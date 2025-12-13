@@ -11,7 +11,7 @@ createRoot(document.getElementById("root")!).render(
       options={{
         api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
         capture_exceptions: true,
-        debug: import.meta.env.MODE === "development",
+        //debug: import.meta.env.MODE === "development",
         capture_pageview: false,
         autocapture: false,
         capture_pageleave: true,
