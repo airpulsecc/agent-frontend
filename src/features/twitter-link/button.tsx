@@ -1,17 +1,18 @@
-import { Button, Text } from '@/shared/ui'
-import { XLogo } from '@/assets/icons'
-import { useCallback } from 'react'
-import { XIcon } from 'lucide-react'
-import { useProfile } from '@/providers/profile-provider'
-import { getGetOwnProfileQueryKey, useDisconnectTwitter } from '@/api'
-import { useQueryClient } from '@tanstack/react-query'
-import { token } from '@/state/client/auth'
+import { Button, Text, HoverCard, DropdownMenu } from "@/shared/ui";
+import { XLogo } from "@/assets/icons";
+import { useCallback } from "react";
+import { XIcon } from "lucide-react";
+import { useProfile } from "@/hooks/use-profile";
+import { getGetOwnProfileQueryKey, useDisconnectTwitter } from "@/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { token } from "@/state/client/auth";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'
+const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3001";
 
 const TwitterLinkButton = () => {
-  const { twitterInfo, isTwitterLinked } = useProfile()
-  const queryClient = useQueryClient()
+  const { data: profile } = useProfile();
+  const isTwitterLinked = !!profile?.twitterId;
+  const queryClient = useQueryClient();
 
   const { mutate: disconnect, isPending: isDisconnecting } =
     useDisconnectTwitter({
@@ -19,25 +20,25 @@ const TwitterLinkButton = () => {
         onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: getGetOwnProfileQueryKey(),
-          })
+          });
         },
       },
-    })
+    });
 
   const handleLinkTwitter = useCallback(() => {
-    const jwt = token.getToken()
+    const jwt = token.getToken();
     if (!jwt) {
-      console.error('No JWT token found')
-      return
+      console.error("No JWT token found");
+      return;
     }
 
     // Редирект на OAuth endpoint с JWT в query (будет перенесён в cookie)
-    window.location.href = `${API_URL}/api/auth/twitter/connect?token=${jwt}`
-  }, [])
+    window.location.href = `${API_URL}/api/auth/twitter/connect?token=${jwt}`;
+  }, []);
 
   const handleUnlinkTwitter = useCallback(() => {
-    disconnect()
-  }, [disconnect])
+    disconnect();
+  }, [disconnect]);
 
   return (
     <>
@@ -52,21 +53,34 @@ const TwitterLinkButton = () => {
         <div className="flex items-center gap-3 justify-between w-full">
           <div className="flex items-center gap-2">
             <XLogo />
-            <Text variant="md">@{twitterInfo?.username}</Text>
+            <Text variant="md">@{profile?.twitterUsername}</Text>
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleUnlinkTwitter}
-            disabled={isDisconnecting}
-          >
-            <XIcon />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenu.Trigger asChild>
+              <Button variant="ghost" size="icon" disabled={isDisconnecting}>
+                <XIcon />
+              </Button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content className="p-3 space-y-3">
+              <Text variant="xs">
+                Are you sure you want to unlink your Twitter account?
+              </Text>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={handleUnlinkTwitter}
+                disabled={isDisconnecting}
+                fullWidth
+              >
+                Unlink
+              </Button>
+            </DropdownMenu.Content>
+          </DropdownMenu>
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export { TwitterLinkButton }
+export { TwitterLinkButton };
