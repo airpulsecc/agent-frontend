@@ -12,7 +12,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthResponseDto"
+                  "$ref": "#/components/schemas/AuthResponse"
                 }
               }
             }
@@ -43,7 +43,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserProfileDto"
+                  "$ref": "#/components/schemas/UserProfile"
                 }
               }
             }
@@ -74,7 +74,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateProfileDto"
+                "$ref": "#/components/schemas/UpdateProfile"
               }
             }
           }
@@ -85,7 +85,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserProfileDto"
+                  "$ref": "#/components/schemas/UserProfile"
                 }
               }
             }
@@ -154,7 +154,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserProfileDto"
+                  "$ref": "#/components/schemas/UserProfile"
                 }
               }
             }
@@ -169,6 +169,53 @@
           }
         ],
         "summary": "Disconnect Twitter account",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/whitelist": {
+      "post": {
+        "description": "Submit application to join whitelist. Requires Twitter account to be linked.",
+        "operationId": "submitWhitelist",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitWhitelist"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Whitelist application submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Twitter account not linked"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing JWT token"
+          },
+          "409": {
+            "description": "Conflict - User is already in whitelist"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Submit whitelist application",
         "tags": [
           "auth"
         ]
@@ -370,7 +417,7 @@
       }
     },
     "schemas": {
-      "UserProfileDto": {
+      "UserProfile": {
         "type": "object",
         "properties": {
           "id": {
@@ -400,6 +447,21 @@
             "description": "Twitter username (handle)",
             "example": "johndoe",
             "nullable": true
+          },
+          "whitelistStatus": {
+            "type": "string",
+            "description": "Whitelist status",
+            "example": "approved",
+            "enum": [
+              "none",
+              "pending",
+              "approved"
+            ]
+          },
+          "isInWhitelist": {
+            "type": "boolean",
+            "description": "User is in whitelist (whitelistStatus === approved)",
+            "example": true
           }
         },
         "required": [
@@ -407,10 +469,12 @@
           "wallet",
           "name",
           "twitterId",
-          "twitterUsername"
+          "twitterUsername",
+          "whitelistStatus",
+          "isInWhitelist"
         ]
       },
-      "AuthResponseDto": {
+      "AuthResponse": {
         "type": "object",
         "properties": {
           "accessToken": {
@@ -422,7 +486,7 @@
             "description": "User information",
             "allOf": [
               {
-                "$ref": "#/components/schemas/UserProfileDto"
+                "$ref": "#/components/schemas/UserProfile"
               }
             ]
           }
@@ -432,7 +496,7 @@
           "user"
         ]
       },
-      "UpdateProfileDto": {
+      "UpdateProfile": {
         "type": "object",
         "properties": {
           "name": {
@@ -441,6 +505,19 @@
             "example": "John Doe"
           }
         }
+      },
+      "SubmitWhitelist": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User display name",
+            "example": "John Doe"
+          }
+        },
+        "required": [
+          "name"
+        ]
       },
       "TransactionPayloadType": {
         "type": "object",
