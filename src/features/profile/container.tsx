@@ -17,7 +17,9 @@ const ProfileContainer: FC = () => {
   return (
     <div className="w-full max-w-3xl space-y-3">
       {/* Форма скрывается сама когда isInWhitelist */}
-      {!isPending && <AuthForm className="mx-auto" />}
+      {!isPending && !profile?.isInWhitelist && (
+        <AuthForm className="mx-auto" />
+      )}
 
       {/* Pending UI */}
       {isPending && (
