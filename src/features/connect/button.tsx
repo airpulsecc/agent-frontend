@@ -32,7 +32,12 @@ const ConnectButton: FC<Props> = ({ className, fullWidth = false }) => {
       {isConnected && (
         <DropdownMenu open={isOpen} onOpenChange={onOpenChange}>
           <DropdownMenu.Trigger asChild>
-            <Button disabled={isConnecting} variant="secondary" size="xl">
+            <Button
+              disabled={isConnecting}
+              variant="secondary"
+              size="xl"
+              fullWidth={fullWidth}
+            >
               <WalletIcon className="size-4" />
 
               {formatAddress(address!)}
@@ -67,6 +72,7 @@ const ConnectButton: FC<Props> = ({ className, fullWidth = false }) => {
           disabled={isConnecting}
           variant="primary"
           size="xl"
+          fullWidth={fullWidth}
         >
           {isMobile ? "Connect" : "Connect Wallet"}
         </Button>
