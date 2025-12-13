@@ -45,6 +45,7 @@ function useSlideToUnlock() {
 type SlideToUnlockRootProps = React.ComponentProps<'div'> & {
   handleWidth?: number
   onUnlock?: () => void
+  disabled?: boolean
 }
 
 function SlideToUnlock({
@@ -52,6 +53,7 @@ function SlideToUnlock({
   handleWidth = 56,
   children,
   onUnlock,
+  disabled = false,
   ...props
 }: SlideToUnlockRootProps) {
   const trackRef = useRef<HTMLDivElement>(null)
@@ -91,14 +93,16 @@ function SlideToUnlock({
         handleWidth,
         textOpacity,
         maxX,
-        onDragStart: handleDragStart,
-        onDragEnd: handleDragEnd,
+        onDragStart: disabled ? () => {} : handleDragStart,
+        onDragEnd: disabled ? () => {} : handleDragEnd,
       }}
     >
       <div
         data-slot="slide-to-unlock"
+        data-disabled={disabled}
         className={cn(
           'w-[216px] rounded-xl bg-zinc-100 p-1 shadow-inner ring ring-black/5 ring-inset dark:bg-zinc-900 dark:ring-white/10',
+          disabled && 'pointer-events-none opacity-50',
           className,
         )}
         {...props}

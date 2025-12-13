@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
-const cardVariants = cva("flex flex-col gap-6 py-2", {
+const cardVariants = cva("flex flex-col gap-6 py-4", {
   variants: {
     variant: {
       outline: "bg-card rounded-xl border shadow-sm",
