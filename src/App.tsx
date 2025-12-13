@@ -1,5 +1,4 @@
 import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
-import { ProfileProvider } from "@/providers/profile-provider";
 import { Web3Provider } from "@/providers/web3-provider";
 import { Router } from "./router";
 import { ReactQueryProvider } from "./state/server";
@@ -9,9 +8,7 @@ export default function App() {
     <Web3Provider>
       <ReactQueryProvider>
         <DynamicWagmiConnector>
-          <ProfileProvider>
-            <Router />
-          </ProfileProvider>
+          <Router />
         </DynamicWagmiConnector>
       </ReactQueryProvider>
     </Web3Provider>
