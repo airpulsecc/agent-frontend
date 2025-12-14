@@ -7,7 +7,7 @@ import { getGetOwnProfileQueryKey, useDisconnectTwitter } from "@/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { token } from "@/state/client/auth";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3001";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const TwitterLinkButton = () => {
   const { data: profile } = useProfile();
