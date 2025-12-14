@@ -74,6 +74,7 @@ const AuthForm: FC<Props> = ({
             <Card.Title>Almost there!</Card.Title>
             <Card.Description>
               Fill in your username and link Twitter to complete registration
+              join the whitelist
             </Card.Description>
           </Card.Header>
           <Card.Content className={cn("space-y-6", contentClassName)}>
