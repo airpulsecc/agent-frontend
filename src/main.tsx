@@ -15,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
         capture_pageview: false,
         autocapture: false,
         capture_pageleave: true,
+        disable_external_dependency_loading: true,
       }}
     >
       <App />
